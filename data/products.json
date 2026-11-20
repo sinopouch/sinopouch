@@ -1,0 +1,74 @@
+{
+  "products": [
+    {
+      "name": "Coffee Bags",
+      "tag": "",
+      "tag_style": "amber",
+      "icon": "coffee",
+      "description": "Flat-bottom, side-gusset and stand-up coffee bags with one-way valve and resealable zip to keep beans fresh.",
+      "applications": "whole bean, ground coffee",
+      "options": "valve, tin tie, zip",
+      "page": "coffee-bags.html"
+    },
+    {
+      "name": "Mylar Bags",
+      "tag": "",
+      "tag_style": "green",
+      "icon": "mylar",
+      "description": "High-barrier foil pouches that block light, moisture and odor. Child-resistant zippers available for compliant markets.",
+      "applications": "dried goods, hemp/CBD, supplements",
+      "options": "CR zip, matte, window",
+      "page": "mylar-bags.html"
+    },
+    {
+      "name": "Pet Food Bags",
+      "tag": "",
+      "tag_style": "green",
+      "icon": "pet",
+      "description": "Large-format stand-up and flat-bottom bags with strong seals, handles and zippers — built for heavy contents and freshness.",
+      "applications": "dog food, cat food, treats",
+      "options": "handle, zip, high barrier",
+      "page": "pet-food-bags.html"
+    },
+    {
+      "name": "Bread Bags",
+      "tag": "",
+      "tag_style": "amber",
+      "icon": "bread",
+      "description": "Bakery bags with clear windows and tin ties or zippers — keeps bread fresh while showing the product.",
+      "applications": "bread, bakery, pastries",
+      "options": "window, tin tie, anti-mist film",
+      "page": "bread-bags.html"
+    },
+    {
+      "name": "Spout Pouches",
+      "tag": "",
+      "tag_style": "green",
+      "icon": "spout",
+      "description": "Stand-up pouches with a resealable spout and cap — lightweight, leak-proof and shatter-resistant for liquids.",
+      "applications": "beverages, sauces, purees, liquids",
+      "options": "spout size, cap color",
+      "page": "spout-pouches.html"
+    },
+    {
+      "name": "Special Shaped Bags",
+      "tag": "",
+      "tag_style": "amber",
+      "icon": "shaped",
+      "description": "Die-cut pouches in custom shapes that stand out on shelf — rounded, arched, window-cut or brand-specific silhouettes.",
+      "applications": "gifts, candy, promotional",
+      "options": "custom die-cut, window",
+      "page": "special-shaped-bags.html"
+    },
+    {
+      "name": "Stand Up Pouches",
+      "tag": "",
+      "tag_style": "green",
+      "icon": "standup",
+      "description": "The classic doypack — stable base, resealable zip and optional window. The go-to format across almost every category.",
+      "applications": "snacks, food, coffee, supplements",
+      "options": "zip, window, tear notch",
+      "page": "stand-up-pouches.html"
+    }
+  ]
+}
