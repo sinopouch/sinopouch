@@ -1,0 +1,102 @@
+# ============================================================
+# SinoPouch 网站后台配置
+# 登录后台后，你可以修改：联系方式、产品分类、网站文案
+# ============================================================
+
+# 后端：使用 GitHub 存储内容，修改后自动重新发布网站
+# ★★★ 部署前必须改下面两处（带 ★★★ 的）★★★
+backend:
+  name: github
+  repo: YOUR_GITHUB_NAME/sinopouch        # ★★★ 改成：你的GitHub用户名/sinopouch
+  branch: main
+  auth_type: pkce                          # 用 PKCE，无需 client secret，更安全
+  app_id: YOUR_CLIENT_ID                   # ★★★ 改成：GitHub OAuth 应用的 Client ID
+  commit_messages:
+    create: "Add {{collection}}: {{slug}}"
+    update: "Update {{collection}}: {{slug}}"
+    delete: "Delete {{collection}}: {{slug}}"
+
+# 你的网站地址（部署后改成真实域名）
+site_url: https://sinopouch.com
+
+# 后台显示名称
+site_name: SinoPouch Content Manager
+
+# 界面语言：中文
+ui:
+  labels:
+    collections: "内容管理"
+
+# 上传的图片存放位置
+media_folder: "assets/uploads"
+public_folder: "/assets/uploads"
+
+# ------------------------------------------------------------
+# 1. 联系方式（重要：你要改的电话、邮箱、地址在这里）
+# ------------------------------------------------------------
+collections:
+  - name: "site"
+    label: "联系方式"
+    description: "修改邮箱、WhatsApp、地址。改完点右上角 Publish 发布。"
+    editor:
+      preview: false
+    files:
+      - name: "contact"
+        label: "联系信息"
+        file: "data/site.json"
+        fields:
+          - { label: "公司名称", name: "company", widget: "string" }
+          - { label: "邮箱", name: "email", widget: "string" }
+          - { label: "WhatsApp 显示号码", name: "whatsapp", widget: "string", hint: "客户看到的，如 +86 138 0000 0000" }
+          - { label: "WhatsApp 链接号码", name: "whatsapp_number", widget: "string", hint: "纯数字，带国家码，如 8613800000000（不要 + 和空格）" }
+          - { label: "地址第一行", name: "address_line1", widget: "string" }
+          - { label: "地址第二行", name: "address_line2", widget: "string" }
+          - { label: "工作时间", name: "hours", widget: "string" }
+          - { label: "页脚简介", name: "footer_tagline", widget: "text" }
+
+  # ----------------------------------------------------------
+  # 2. 产品分类（7 个产品，可增删改）
+  # ----------------------------------------------------------
+  - name: "products"
+    label: "产品分类"
+    description: "添加、删除或修改产品。图标 icon 可选：coffee / mylar / pet / bread / spout / shaped / standup"
+    editor:
+      preview: false
+    files:
+      - name: "list"
+        label: "全部产品"
+        file: "data/products.json"
+        fields:
+          - label: "产品列表"
+            name: "products"
+            widget: "list"
+            summary: "{{fields.name}}"
+            fields:
+              - { label: "产品名称", name: "name", widget: "string" }
+              - { label: "角标文字", name: "tag", widget: "string", required: false, hint: "如 BEST SELLER，留空则不显示" }
+              - { label: "角标颜色", name: "tag_style", widget: "select", options: ["green", "amber"], default: "green" }
+              - { label: "图标", name: "icon", widget: "select", options: ["coffee", "mylar", "pet", "bread", "spout", "shaped", "standup"], default: "standup" }
+              - { label: "产品描述", name: "description", widget: "text" }
+              - { label: "应用场景", name: "applications", widget: "string", hint: "如 whole bean, ground coffee" }
+              - { label: "可选配置", name: "options", widget: "string", hint: "如 valve, tin tie, zip" }
+              - { label: "详情页面", name: "page", widget: "select", options: ["coffee-bags.html", "mylar-bags.html", "pet-food-bags.html", "bread-bags.html", "spout-pouches.html", "special-shaped-bags.html", "stand-up-pouches.html", "contact.html"], default: "contact.html", hint: "点 View details 跳转到的页面" }
+
+  # ----------------------------------------------------------
+  # 3. 网站文案（首页标语、按钮文字等）
+  # ----------------------------------------------------------
+  - name: "content"
+    label: "网站文案"
+    description: "修改首页大标题和通用按钮文字"
+    editor:
+      preview: false
+    files:
+      - name: "texts"
+        label: "通用文案"
+        file: "data/content.json"
+        fields:
+          - { label: "首页标题第一段", name: "home_hero_before", widget: "string", hint: "如 Custom Coffee &" }
+          - { label: "首页标题高亮词", name: "home_hero_accent", widget: "string", hint: "用琥珀色突出，如 Hemp" }
+          - { label: "首页标题第三段", name: "home_hero_after", widget: "string", hint: "如 Pouches, Straight From the Factory" }
+          - { label: "首页副标题", name: "home_hero_lead", widget: "text" }
+          - { label: "行动区标题", name: "cta_title", widget: "string" }
+          - { label: "行动区文字", name: "cta_text", widget: "text" }
