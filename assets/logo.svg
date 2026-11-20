@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 90" width="840" height="180">
+  <title>SinoPouch Logo</title>
+  <g transform="translate(8, 10)">
+    <path d="M8 14 L52 14 L56 64 Q56 70 50 70 L10 70 Q4 70 4 64 Z" fill="#21A179"/>
+    <path d="M6 7 L54 7 L52 14 L8 14 Z" fill="#168265"/>
+    <path d="M30 28 C41 33 41 47 30 55 C19 47 19 33 30 28 Z" fill="#F2A93B"/>
+    <path d="M30 30 L30 53" fill="none" stroke="#FFFFFF" stroke-width="1"/>
+  </g>
+  <text x="88" y="52" font-family="Arial, Helvetica, sans-serif" font-size="38" font-weight="bold" fill="#0C6148">Sino<tspan fill="#21A179">Pouch</tspan></text>
+  <text x="90" y="74" font-family="Arial, Helvetica, sans-serif" font-size="13" fill="#5F5E5A" letter-spacing="2">FLEXIBLE PACKAGING SOLUTIONS</text>
+</svg>
