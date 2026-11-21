@@ -9,8 +9,8 @@ backend:
   name: github
   repo: sinopouch/sinopouch
   branch: main
-  auth_type: pkce                          # 用 PKCE，无需 client secret，更安全
-  app_id: Ov23lirQU9cmtZJnDBge
+  base_url: https://sinopouch-auth.pollyluo1.workers.dev
+  auth_endpoint: /auth
   commit_messages:
     create: "Add {{collection}}: {{slug}}"
     update: "Update {{collection}}: {{slug}}"
