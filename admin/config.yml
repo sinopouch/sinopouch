@@ -7,10 +7,10 @@
 # ★★★ 部署前必须改下面两处（带 ★★★ 的）★★★
 backend:
   name: github
-  repo: YOUR_GITHUB_NAME/sinopouch        # ★★★ 改成：你的GitHub用户名/sinopouch
+  repo: sinopouch/sinopouch
   branch: main
   auth_type: pkce                          # 用 PKCE，无需 client secret，更安全
-  app_id: YOUR_CLIENT_ID                   # ★★★ 改成：GitHub OAuth 应用的 Client ID
+  app_id: Ov23lirQU9cmtZJnDBge
   commit_messages:
     create: "Add {{collection}}: {{slug}}"
     update: "Update {{collection}}: {{slug}}"
