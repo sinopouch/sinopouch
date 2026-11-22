@@ -271,7 +271,93 @@ table.data td:first-child { font-weight: 700; color: var(--green-deep); }
 .wa-float:hover { transform: scale(1.08); }
 .wa-float svg { width: 32px; height: 32px; fill: #fff; }
 
+/* ---------- 后台上传的照片（替换默认插画） ---------- */
+.hero-art .photo-art { width: 100%; max-width: 380px; display: block; border-radius: 10px; }
+.cat-banner-art .photo-art { width: 100%; max-width: 200px; display: block; border-radius: 8px; }
+.product-thumb .photo-thumb { width: 100%; height: 100%; object-fit: cover; display: block; }
+.factory-shot .photo-factory { width: 100%; height: 170px; object-fit: cover; display: block; }
+
+/* Hero 有海报背景时：加暗色遮罩保证白字可读 */
+.hero.hero-has-banner::before {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(90deg, rgba(6,60,44,.82) 0%, rgba(6,60,44,.5) 60%, rgba(6,60,44,.2) 100%);
+  z-index: 1;
+}
+.page-hero.page-hero-has-banner { position: relative; }
+.page-hero.page-hero-has-banner::before {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(90deg, rgba(6,60,44,.88), rgba(6,60,44,.45));
+  z-index: 0;
+}
+.page-hero.page-hero-has-banner .container { position: relative; z-index: 1; }
+.cat-banner.cat-banner-has-image { position: relative; }
+.cat-banner.cat-banner-has-image::before {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(90deg, rgba(6,60,44,.88), rgba(6,60,44,.4));
+  z-index: 0;
+}
+.cat-banner.cat-banner-has-image .cat-banner-inner { position: relative; z-index: 1; }
+
+/* ---------- 导航悬浮下拉（Custom Products） ---------- */
+.nav-has-dropdown { position: relative; }
+.nav-has-dropdown > a[data-nav-products]::after {
+  content: " ▾"; font-size: 11px; margin-left: 2px;
+}
+.nav-dropdown {
+  position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+  background: #fff; border: 1px solid var(--line); border-radius: 12px;
+  box-shadow: 0 18px 44px rgba(12,97,72,.16);
+  padding: 22px; opacity: 0; visibility: hidden;
+  transition: opacity .18s, transform .18s; transform: translateX(-50%) translateY(8px);
+  z-index: 200; min-width: 480px;
+}
+.nav-has-dropdown:hover .nav-dropdown,
+.nav-has-dropdown:focus-within .nav-dropdown {
+  opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0);
+}
+.nav-dropdown-inner ul {
+  list-style: none; display: grid;
+  grid-template-columns: repeat(var(--dd-cols, 3), 1fr); gap: 8px 18px;
+}
+.nav-dropdown-inner a {
+  display: block; padding: 8px 10px; border-radius: 7px;
+  font-size: 14px; font-weight: 600; color: var(--green-deep);
+}
+.nav-dropdown-inner a:hover { background: var(--bg-soft); color: var(--green); }
+
+/* ---------- 认证页：左图右文列表 ---------- */
+.cert-list { display: flex; flex-direction: column; gap: 26px; }
+.cert-row {
+  display: grid; grid-template-columns: 200px 1fr; gap: 32px; align-items: start;
+  padding: 30px 0; border-bottom: 1px solid var(--line);
+}
+.cert-logo { display: flex; align-items: center; justify-content: center; }
+.cert-logo img { max-width: 180px; max-height: 150px; object-fit: contain; }
+.cert-logo.cert-placeholder {
+  width: 140px; height: 140px; border-radius: 14px; background: var(--bg-soft);
+  color: var(--green); font-size: 56px; font-weight: 800;
+}
+.cert-copy h3 { color: var(--green-deep); font-size: 1.15rem; margin-bottom: 10px; }
+.cert-copy p { color: var(--muted); font-size: .96rem; line-height: 1.7; }
+
+/* ---------- 分类页：多款式图库 ---------- */
+.gallery-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+.gallery-item { background: #fff; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; text-align: center; box-shadow: var(--shadow); }
+.gallery-img { width: 100%; height: 200px; object-fit: cover; display: block; }
+.gallery-img.gallery-empty { display: flex; align-items: center; justify-content: center; background: var(--bg-soft); color: var(--muted); font-size: 13px; }
+.gallery-cap { display: block; padding: 10px; font-size: .88rem; font-weight: 600; color: var(--green-deep); }
+
 /* ---------- Responsive ---------- */
+@media (max-width: 900px) {
+  .hero-art .photo-art { max-width: 260px; }
+  .cat-banner-art .photo-art { max-width: 150px; }
+  .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+  .cert-row { grid-template-columns: 120px 1fr; gap: 20px; }
+  .cert-logo img { max-width: 110px; }
+  .cert-logo.cert-placeholder { width: 90px; height: 90px; font-size: 36px; }
+  .nav-dropdown { min-width: 320px; }
+}
+
 @media (max-width: 900px) {
   .hero-inner { grid-template-columns: 1fr; padding: 60px 0; }
   .hero-art { order: -1; }
