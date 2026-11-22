@@ -4,7 +4,7 @@
 # ============================================================
 
 # 后端：使用 GitHub 存储内容，修改后自动重新发布网站
-# ★★★ 部署前必须改下面两处（带 ★★★ 的）★★★
+# 登录走 Cloudflare Worker 的 OAuth 中转（base_url），不用 Netlify
 backend:
   name: github
   repo: sinopouch/sinopouch
@@ -16,13 +16,9 @@ backend:
     update: "Update {{collection}}: {{slug}}"
     delete: "Delete {{collection}}: {{slug}}"
 
-# 你的网站地址（部署后改成真实域名）
 site_url: https://sinopouch.com
-
-# 后台显示名称
 site_name: SinoPouch Content Manager
 
-# 界面语言：中文
 ui:
   labels:
     collections: "内容管理"
@@ -31,10 +27,10 @@ ui:
 media_folder: "assets/uploads"
 public_folder: "/assets/uploads"
 
-# ------------------------------------------------------------
-# 1. 联系方式（重要：你要改的电话、邮箱、地址在这里）
-# ------------------------------------------------------------
 collections:
+  # ----------------------------------------------------------
+  # 1. 联系方式
+  # ----------------------------------------------------------
   - name: "site"
     label: "联系方式"
     description: "修改邮箱、WhatsApp、地址。改完点右上角 Publish 发布。"
@@ -48,18 +44,18 @@ collections:
           - { label: "公司名称", name: "company", widget: "string" }
           - { label: "邮箱", name: "email", widget: "string" }
           - { label: "WhatsApp 显示号码", name: "whatsapp", widget: "string", hint: "客户看到的，如 +86 138 0000 0000" }
-          - { label: "WhatsApp 链接号码", name: "whatsapp_number", widget: "string", hint: "纯数字，带国家码，如 8613800000000（不要 + 和空格）" }
+          - { label: "WhatsApp 链接号码", name: "whatsapp_number", widget: "string", hint: "纯数字带国家码，如 8613800000000（不要 + 和空格）" }
           - { label: "地址第一行", name: "address_line1", widget: "string" }
           - { label: "地址第二行", name: "address_line2", widget: "string" }
           - { label: "工作时间", name: "hours", widget: "string" }
           - { label: "页脚简介", name: "footer_tagline", widget: "text" }
 
   # ----------------------------------------------------------
-  # 2. 产品分类（7 个产品，可增删改）
+  # 2. 产品分类（图片 + 分类页海报 + 多款式图库）
   # ----------------------------------------------------------
   - name: "products"
     label: "产品分类"
-    description: "添加、删除或修改产品。图标 icon 可选：coffee / mylar / pet / bread / spout / shaped / standup"
+    description: "编辑 7 个产品。产品图片显示在卡片和分类页；分类页可再传一张顶部海报和多种款式图。"
     editor:
       preview: false
     files:
@@ -75,28 +71,127 @@ collections:
               - { label: "产品名称", name: "name", widget: "string" }
               - { label: "角标文字", name: "tag", widget: "string", required: false, hint: "如 BEST SELLER，留空则不显示" }
               - { label: "角标颜色", name: "tag_style", widget: "select", options: ["green", "amber"], default: "green" }
-              - { label: "图标", name: "icon", widget: "select", options: ["coffee", "mylar", "pet", "bread", "spout", "shaped", "standup"], default: "standup" }
+              - { label: "图标（无图时显示）", name: "icon", widget: "select", options: ["coffee", "mylar", "pet", "bread", "spout", "shaped", "standup"], default: "standup" }
+              - { label: "产品图片", name: "image", widget: "image", required: false, hint: "显示在产品卡片上。建议横图 1200×800。" }
               - { label: "产品描述", name: "description", widget: "text" }
-              - { label: "应用场景", name: "applications", widget: "string", hint: "如 whole bean, ground coffee" }
-              - { label: "可选配置", name: "options", widget: "string", hint: "如 valve, tin tie, zip" }
-              - { label: "详情页面", name: "page", widget: "select", options: ["coffee-bags.html", "mylar-bags.html", "pet-food-bags.html", "bread-bags.html", "spout-pouches.html", "special-shaped-bags.html", "stand-up-pouches.html", "contact.html"], default: "contact.html", hint: "点 View details 跳转到的页面" }
+              - { label: "应用场景", name: "applications", widget: "string" }
+              - { label: "可选配置", name: "options", widget: "string" }
+              - { label: "详情页面", name: "page", widget: "select", options: ["coffee-bags.html", "mylar-bags.html", "pet-food-bags.html", "bread-bags.html", "spout-pouches.html", "special-shaped-bags.html", "stand-up-pouches.html", "contact.html"], default: "contact.html" }
+              - { label: "分类页顶部海报", name: "banner_image", widget: "image", required: false, hint: "该分类页最上方的横幅海报。建议横图 1600×600。留空则用纯色背景。" }
+              - label: "该分类的款式图片（可增删）"
+                name: "gallery"
+                widget: "list"
+                required: false
+                summary: "{{fields.title}}"
+                hint: "放同一个类别下不同花纹/款式的产品图，前端会排成一行展示。"
+                fields:
+                  - { label: "款式图片", name: "image", widget: "image", required: false, hint: "建议方图或竖图，800×800 左右" }
+                  - { label: "款式名称", name: "title", widget: "string", required: false, hint: "如 Matte Black / Kraft Window" }
 
   # ----------------------------------------------------------
-  # 3. 网站文案（首页标语、按钮文字等）
+  # 3. 首页内容（Hero 海报文案 + 产品区 + 工厂区）
   # ----------------------------------------------------------
-  - name: "content"
-    label: "网站文案"
-    description: "修改首页大标题和通用按钮文字"
+  - name: "home"
+    label: "首页内容"
+    description: "首页海报、文案、工厂图。改完点右上角 Publish 发布。"
     editor:
       preview: false
     files:
       - name: "texts"
-        label: "通用文案"
+        label: "首页全部内容"
         file: "data/content.json"
         fields:
-          - { label: "首页标题第一段", name: "home_hero_before", widget: "string", hint: "如 Custom Coffee &" }
-          - { label: "首页标题高亮词", name: "home_hero_accent", widget: "string", hint: "用琥珀色突出，如 Hemp" }
-          - { label: "首页标题第三段", name: "home_hero_after", widget: "string", hint: "如 Pouches, Straight From the Factory" }
-          - { label: "首页副标题", name: "home_hero_lead", widget: "text" }
+          - label: "── 首页顶部海报 ──"
+            name: "hero_banner"
+            widget: "image"
+            required: false
+            hint: "第1条：首页顶部会上传一张海边海报，在这里替换。建议宽幅横图 1920×700。"
+          - { label: "顶部小标题", name: "hero_eyebrow", widget: "string" }
+          - { label: "大标题第一段", name: "home_hero_before", widget: "string" }
+          - { label: "大标题高亮词", name: "home_hero_accent", widget: "string", hint: "用琥珀色突出" }
+          - { label: "大标题第三段", name: "home_hero_after", widget: "string" }
+          - { label: "副标题", name: "home_hero_lead", widget: "text" }
+          - { label: "按钮1文字", name: "hero_btn1", widget: "string" }
+          - { label: "按钮2文字", name: "hero_btn2", widget: "string" }
+          - { label: "右侧产品图（可选）", name: "hero_image", widget: "image", required: false, hint: "有海报时可留空" }
+
+          - label: "── 产品展示区 ──"
+            name: "home_products_eyebrow"
+            widget: "string"
+            hint: "第2条：以下标题/副标题可随时修改；产品图片和文案在左侧『产品分类』里改。"
+          - { label: "产品区标题", name: "home_products_title", widget: "string" }
+          - { label: "产品区副标题", name: "home_products_lead", widget: "text" }
+
+          - label: "── 工厂展示区 ──"
+            name: "home_factory_eyebrow"
+            widget: "string"
+            hint: "第3条：工厂三张图和文字都在这里修改。"
+          - { label: "工厂区标题", name: "home_factory_title", widget: "string" }
+          - { label: "工厂区副标题", name: "home_factory_lead", widget: "text" }
+          - { label: "工厂图1说明", name: "factory_label_1", widget: "string" }
+          - { label: "工厂图1", name: "factory_image_1", widget: "image", required: false }
+          - { label: "工厂图2说明", name: "factory_label_2", widget: "string" }
+          - { label: "工厂图2", name: "factory_image_2", widget: "image", required: false }
+          - { label: "工厂图3说明", name: "factory_label_3", widget: "string" }
+          - { label: "工厂图3", name: "factory_image_3", widget: "image", required: false }
+
+  # ----------------------------------------------------------
+  # 4. 内页内容（Products / OEM / Certifications / Contact）
+  # ----------------------------------------------------------
+  - name: "pages"
+    label: "内页内容"
+    description: "各内页顶部海报和文字。改完点右上角 Publish 发布。"
+    editor:
+      preview: false
+    files:
+      - name: "pages"
+        label: "内页海报与文字"
+        file: "data/pages.json"
+        fields:
+          - label: "── Products 产品总览页 ──"
+            name: "products_banner"
+            widget: "image"
+            required: false
+            hint: "第4条：产品总览页顶部海报。"
+          - { label: "标题", name: "products_hero_title", widget: "string" }
+          - { label: "副标题", name: "products_hero_lead", widget: "text" }
+
+          - label: "── OEM / Custom 定制页 ──"
+            name: "oem_banner"
+            widget: "image"
+            required: false
+            hint: "第5条：定制页最上方海报。"
+          - { label: "标题", name: "oem_hero_title", widget: "string" }
+          - { label: "副标题", name: "oem_hero_lead", widget: "text" }
+          - label: "定制流程步骤（可增删）"
+            name: "oem_steps"
+            widget: "list"
+            summary: "{{fields.title}}"
+            fields:
+              - { label: "步骤标题", name: "title", widget: "string" }
+              - { label: "步骤说明", name: "text", widget: "text" }
+
+          - label: "── Certifications 认证页 ──"
+            name: "cert_hero_title"
+            widget: "string"
+            hint: "第6条：此页顶部不用海报，改成下方左图右文的证书列表。"
+          - { label: "副标题", name: "cert_hero_lead", widget: "text" }
+          - label: "证书列表（左图右文，可增删）"
+            name: "certificates"
+            widget: "list"
+            summary: "{{fields.title}}"
+            fields:
+              - { label: "证书图片", name: "image", widget: "image", required: false, hint: "如 BRC 蓝色标志、BSCI 圆形标志" }
+              - { label: "证书标题", name: "title", widget: "string" }
+              - { label: "证书说明", name: "text", widget: "text" }
+
+          - label: "── Contact 联系页 ──"
+            name: "contact_banner"
+            widget: "image"
+            required: false
+            hint: "第7条：联系页顶部海报图片。"
+          - { label: "标题", name: "contact_hero_title", widget: "string" }
+          - { label: "副标题", name: "contact_hero_lead", widget: "text" }
+
           - { label: "行动区标题", name: "cta_title", widget: "string" }
           - { label: "行动区文字", name: "cta_text", widget: "text" }
