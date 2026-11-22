@@ -1,0 +1,25 @@
+{
+  "products_banner": "",
+  "products_hero_title": "Flexible Packaging Categories",
+  "products_hero_lead": "Custom printed bags and pouches for food, coffee, pet and specialty products — made to your spec, with low minimums and fast sampling.",
+  "oem_banner": "",
+  "oem_hero_title": "OEM & Custom Packaging",
+  "oem_hero_lead": "Your brand, your spec. Tell us what you need and we'll build the pouch from the ground up.",
+  "oem_steps": [
+    { "title": "1 · Inquiry", "text": "Send your bag type, size, quantity and artwork (or a rough idea). We reply with questions and a quote within 24 hours." },
+    { "title": "2 · Solution & Quotation", "text": "We recommend the material structure and printing method, then send a detailed FOB/CIF quote and timeline." },
+    { "title": "3 · Artwork & Proof", "text": "Send your design (AI/PDF preferred). Our team lays out the dieline and sends a digital proof for approval." },
+    { "title": "4 · Sampling", "text": "We produce physical samples — digital or gravure — and ship them to you for seal, print and fit checks." },
+    { "title": "5 · Production", "text": "After sample approval and deposit, we run bulk production with in-line quality checks on print and sealing." },
+    { "title": "6 · Delivery", "text": "Balance payment against B/L copy, then we ship to your port or door with full documentation support." }
+  ],
+  "cert_hero_title": "Certifications & Quality",
+  "cert_hero_lead": "Documentation you can verify — because compliance isn't a nice-to-have, it's the reason you can sell at all.",
+  "certificates": [
+    { "image": "", "title": "BRC PACKAGING CERTIFICATE", "text": "SinoPouch works to BRC-related food-safety management standards for packaging. Our partner factories maintain audited systems covering material control, production hygiene and traceability." },
+    { "image": "", "title": "BSCI: BUSINESS SOCIAL COMPLIANCE INITIATIVE", "text": "We are committed to socially responsible manufacturing. Our production partners follow BSCI guidelines on labour standards, working conditions and ethical business practices." }
+  ],
+  "contact_banner": "",
+  "contact_hero_title": "Let's Talk Packaging",
+  "contact_hero_lead": "Tell us what you're making. We'll get back to you with options and pricing within 24 hours."
+}
