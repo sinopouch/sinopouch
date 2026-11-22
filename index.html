@@ -22,7 +22,7 @@
       <button class="nav-toggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
       <ul class="nav-links">
         <li><a href="index.html" class="active">Home</a></li>
-        <li><a href="products.html">Products</a></li>
+        <li class="nav-has-dropdown"><a href="products.html" data-nav-products>Products</a></li>
         <li><a href="oem.html">OEM / Custom</a></li>
         <li><a href="certifications.html">Certifications</a></li>
         <li><a href="contact.html">Contact</a></li>
@@ -35,12 +35,12 @@
   <section class="hero">
     <div class="container hero-inner">
       <div>
-        <span class="eyebrow" style="color:var(--amber)">FLEXIBLE PACKAGING, MADE FOR YOUR BRAND</span>
+        <span class="eyebrow" style="color:var(--amber)" data-bind="hero_eyebrow">FLEXIBLE PACKAGING, MADE FOR YOUR BRAND</span>
         <h1 data-hero-title>Custom Coffee & <span class="accent">Hemp</span> Pouches, Straight From the Factory</h1>
         <p class="lead" data-bind="home_hero_lead">Food-grade stand-up pouches, flat-bottom coffee bags and compliant hemp/CBD packaging — printed to your design, at low minimums, with fast sampling.</p>
         <div class="hero-btns">
-          <a href="contact.html" class="btn btn-primary">Get a Free Quote →</a>
-          <a href="products.html" class="btn btn-ghost">Explore Products</a>
+          <a href="contact.html" class="btn btn-primary" data-bind="hero_btn1">Get a Free Quote →</a>
+          <a href="products.html" class="btn btn-ghost" data-bind="hero_btn2">Explore Products</a>
         </div>
       </div>
       <!-- Hero 海报：两款袋子展示（以后可把此 SVG 换成真实产品图 <img>） -->
@@ -93,9 +93,9 @@
   <section class="section">
     <div class="container">
       <div class="section-head">
-        <span class="eyebrow">WHAT WE MAKE</span>
-        <h2>Packaging That Sells Your Product</h2>
-        <p>From coffee and mylar to pet food, bakery and specialty pouches — we build packaging that protects your product and looks great on the shelf.</p>
+        <span class="eyebrow" data-bind="home_products_eyebrow">WHAT WE MAKE</span>
+        <h2 data-bind="home_products_title">Packaging That Sells Your Product</h2>
+        <p data-bind="home_products_lead">From coffee and mylar to pet food, bakery and specialty pouches — we build packaging that protects your product and looks great on the shelf.</p>
       </div>
       <div class="grid grid-3" data-product-grid data-limit="6">
         <!-- 产品卡片由 render.js 从 data/products.json 自动填充（首页显示前 6 个，排成 2 行） -->
@@ -108,23 +108,23 @@
   <section class="section soft">
     <div class="container">
       <div class="section-head">
-        <span class="eyebrow">OUR FACTORY</span>
-        <h2>Real Factory, Real Quality</h2>
-        <p>From raw material to finished pouch, every step happens under one roof. Below is a look at our workshop and quality checks.</p>
+        <span class="eyebrow" data-bind="home_factory_eyebrow">OUR FACTORY</span>
+        <h2 data-bind="home_factory_title">Real Factory, Real Quality</h2>
+        <p data-bind="home_factory_lead">From raw material to finished pouch, every step happens under one roof. Below is a look at our workshop and quality checks.</p>
       </div>
       <!-- 工厂照片占位：以后把下面 svg 换成真实照片 <img src="assets/uploads/xxx.jpg"> -->
       <div class="grid grid-3">
         <div class="factory-shot">
           <svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="200" fill="#dfeae4"/><rect x="0" y="140" width="320" height="60" fill="#c3d5cc"/><rect x="40" y="60" width="90" height="80" fill="#21A179" opacity=".35"/><rect x="150" y="45" width="120" height="95" fill="#21A179" opacity=".25"/><circle cx="85" cy="100" r="18" fill="#F2A93B" opacity=".6"/><path d="M60 140 L60 95 M260 140 L260 90" stroke="#7d9c8f" stroke-width="6"/></svg>
-          <span>Production Workshop</span>
+          <span data-bind="factory_label_1">Production Workshop</span>
         </div>
         <div class="factory-shot">
           <svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="200" fill="#dfeae4"/><rect x="0" y="150" width="320" height="50" fill="#c3d5cc"/><rect x="70" y="55" width="180" height="95" rx="6" fill="#21A179" opacity=".3"/><rect x="95" y="80" width="130" height="45" fill="#F2A93B" opacity=".6"/><path d="M100 150 v-40 M220 150 v-40" stroke="#7d9c8f" stroke-width="6"/></svg>
-          <span>Printing & Lamination</span>
+          <span data-bind="factory_label_2">Printing & Lamination</span>
         </div>
         <div class="factory-shot">
           <svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="200" fill="#dfeae4"/><rect x="0" y="150" width="320" height="50" fill="#c3d5cc"/><circle cx="110" cy="100" r="34" fill="#21A179" opacity=".3"/><circle cx="210" cy="100" r="34" fill="#F2A93B" opacity=".55"/><path d="M40 150 L280 150" stroke="#7d9c8f" stroke-width="6"/></svg>
-          <span>Quality Inspection</span>
+          <span data-bind="factory_label_3">Quality Inspection</span>
         </div>
       </div>
     </div>
@@ -196,7 +196,7 @@
           <p style="margin-top:16px;font-size:.9rem;max-width:280px"><span data-bind="footer_tagline">Custom flexible packaging for coffee, mylar, pet food, bread, spout, shaped and stand-up pouches. Direct from China.</span> Quality you can trust, direct from China.</p>
         </div>
         <div><h4>Explore</h4><ul>
-          <li><a href="index.html">Home</a></li><li><a href="products.html">Products</a></li>
+          <li><a href="index.html">Home</a></li><li><a href="products.html">Custom Products</a></li>
           <li><a href="oem.html">OEM / Custom</a></li><li><a href="certifications.html">Certifications</a></li>
         </ul></div>
         <div><h4>Products</h4><ul>
