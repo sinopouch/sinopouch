@@ -274,7 +274,7 @@ table.data td:first-child { font-weight: 700; color: var(--green-deep); }
 /* ---------- 后台上传的照片（替换默认插画） ---------- */
 .hero-art .photo-art { width: 100%; max-width: 380px; display: block; border-radius: 10px; }
 .cat-banner-art .photo-art { width: 100%; max-width: 200px; display: block; border-radius: 8px; }
-.product-thumb .photo-thumb { width: 100%; height: 100%; object-fit: cover; display: block; }
+.product-thumb .photo-thumb { width: 100%; height: 100%; object-fit: contain; display: block; padding: 10px; }
 .factory-shot .photo-factory { width: 100%; height: 170px; object-fit: cover; display: block; }
 
 /* Hero 有海报背景时：加暗色遮罩保证白字可读 */
