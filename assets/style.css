@@ -316,6 +316,16 @@ table.data td:first-child { font-weight: 700; color: var(--green-deep); }
 .page-hero.page-hero-has-banner::before { content: none; }
 .page-hero.page-hero-has-banner h1 { text-shadow: 0 1px 2px rgba(255,255,255,.9), 0 0 14px rgba(255,255,255,.75); }
 .page-hero.page-hero-has-banner p { color: #3F5149; text-shadow: 0 1px 2px rgba(255,255,255,.9); }
+/* 海报铺满后文字可能压到袋子，加淡白渐变保护（位置不变） */
+.page-hero.page-hero-has-banner .container > h1,
+.page-hero.page-hero-has-banner .container > p {
+  background: linear-gradient(90deg, rgba(255,255,255,.85) 0%, rgba(255,255,255,.55) 60%, transparent 100%);
+  border-radius: 6px;
+}
+@media (min-width: 1200px) {
+  .page-hero.page-hero-has-banner .container > h1,
+  .page-hero.page-hero-has-banner .container > p { padding: 4px 10px; margin-left: -10px; }
+}
 .page-hero.page-hero-has-banner .crumb { color: #5B7066; }
 .page-hero.page-hero-has-banner .crumb a { color: var(--green-deep); }
 .page-hero.page-hero-has-banner .container { position: relative; z-index: 1; }
