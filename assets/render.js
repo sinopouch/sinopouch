@@ -118,17 +118,7 @@
       if (heroEl) {
         heroEl.style.backgroundImage = "url('" + esc(c.hero_banner) + "')";
         heroEl.classList.add("hero-has-banner");
-        // banner 高度跟随海报比例（仅宽屏，避免窄屏文字放不下）
-        if (window.innerWidth >= 1200) {
-          var heroProbe = new Image();
-          heroProbe.onload = function () {
-            if (heroProbe.naturalWidth && heroProbe.naturalHeight) {
-              var ratio = heroProbe.naturalWidth / heroProbe.naturalHeight;
-              if (ratio >= 1.5 && ratio <= 5 && window.innerWidth >= 1200) heroEl.style.aspectRatio = ratio + " / 1";
-            }
-          };
-          heroProbe.src = c.hero_banner;
-        }
+        // 宽屏：固定更高高度 + cover 放大海报，让袋子更大更醒目（CSS 控制尺寸与背景模式）
       }
     }
     // 右侧产品图
