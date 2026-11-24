@@ -90,6 +90,13 @@ collections:
                   - { label: "一句话简介", name: "desc", widget: "string", required: false, hint: "详情页标题下方的一句话介绍" }
                   - { label: "产品参数", name: "specs", widget: "text", required: false, hint: "每行一条参数，如：材质：PET/PE；容量：250g；印刷：凹版10色" }
                   - { label: "详细说明", name: "details", widget: "text", required: false, hint: "详情页正文，可写工艺、适用场景、起订量等" }
+                  - label: "产品详情图（最多6张）"
+                    name: "detail_images"
+                    widget: "list"
+                    required: false
+                    max: 6
+                    hint: "点开款式后展示的补充图片，如细节特写、内袋、印刷效果。最多6张，建议方图或横图。"
+                    field: { label: "详情图", name: "image", widget: "image", required: false }
 
   # ----------------------------------------------------------
   # 3. 首页内容（Hero 海报文案 + 产品区 + 工厂区）
