@@ -91,6 +91,11 @@
 
   // 首页：Hero 海报背景 + 文案 + 主图；工厂三图
   function renderHome(c) {
+    // 首页文案：所有 data-bind 元素从 content.json 填充（site.json 不含这些键）
+    document.querySelectorAll("[data-bind]").forEach(function (el) {
+      var key = el.getAttribute("data-bind");
+      if (c[key] !== undefined) el.textContent = c[key];
+    });
     // Hero 文案
     var hero = document.querySelector("[data-hero-title]");
     if (hero) {
