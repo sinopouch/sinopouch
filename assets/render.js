@@ -165,6 +165,15 @@
       if (ph) {
         ph.style.backgroundImage = "url('" + esc(p[key]) + "')";
         ph.classList.add("page-hero-has-banner");
+        // banner 高度跟随海报比例，海报完整铺满且不裁切/不留边（与分类页一致）
+        var phProbe = new Image();
+        phProbe.onload = function () {
+          if (phProbe.naturalWidth && phProbe.naturalHeight) {
+            var phRatio = phProbe.naturalWidth / phProbe.naturalHeight;
+            if (phRatio >= 1.5 && phRatio <= 5) ph.style.aspectRatio = phRatio + " / 1";
+          }
+        };
+        phProbe.src = p[key];
       }
     }
   }
