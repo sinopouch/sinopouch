@@ -118,6 +118,17 @@
       if (heroEl) {
         heroEl.style.backgroundImage = "url('" + esc(c.hero_banner) + "')";
         heroEl.classList.add("hero-has-banner");
+        // banner 高度跟随海报比例（仅宽屏，避免窄屏文字放不下）
+        if (window.innerWidth >= 1200) {
+          var heroProbe = new Image();
+          heroProbe.onload = function () {
+            if (heroProbe.naturalWidth && heroProbe.naturalHeight) {
+              var ratio = heroProbe.naturalWidth / heroProbe.naturalHeight;
+              if (ratio >= 1.5 && ratio <= 5 && window.innerWidth >= 1200) heroEl.style.aspectRatio = ratio + " / 1";
+            }
+          };
+          heroProbe.src = c.hero_banner;
+        }
       }
     }
     // 右侧产品图
@@ -233,16 +244,16 @@
           '<span class="gallery-view">View details →</span></button>';
       }).join("");
       gal.style.display = "";
-      bindGallery(gal, match.gallery, match.name);
+      bindGallery(gal, match.gallery, match);
     }
   }
 
   // 款式详情弹窗
-  function bindGallery(gal, items, categoryName) {
+  function bindGallery(gal, items, product) {
     gal.querySelectorAll("[data-gallery-index]").forEach(function (btn) {
       btn.addEventListener("click", function () {
         var item = items[parseInt(btn.getAttribute("data-gallery-index"), 10)];
-        if (item) openStyleDetail(item, categoryName);
+        if (item) openStyleDetail(item, product);
       });
     });
   }
@@ -251,22 +262,44 @@
     return String(s || "").split(/\r?\n/).map(function (x) { return x.trim(); }).filter(Boolean);
   }
 
-  function openStyleDetail(item, categoryName) {
+  function openStyleDetail(item, product) {
     closeStyleDetail();
     var wrap = document.createElement("div");
     wrap.className = "style-modal";
+    var categoryName = product && product.name ? product.name : "Product";
 
-    var specsHtml = splitLines(item.specs).map(function (line) {
+    // 后台填的参数优先；没填则用产品分类自带信息作为默认参数，保证点进去有内容
+    var specPairs = splitLines(item.specs).map(function (line) {
       var parts = line.split(/[：:]/);
-      var k = parts.length > 1 ? parts[0].trim() : "Detail";
-      var v = parts.length > 1 ? parts.slice(1).join(":").trim() : line;
-      return '<div class="spec-row"><span class="spec-k">' + esc(k) + '</span><span class="spec-v">' + esc(v) + "</span></div>";
+      return parts.length > 1
+        ? [parts[0].trim(), parts.slice(1).join(":").trim()]
+        : ["Detail", line];
+    });
+    if (!specPairs.length && product) {
+      if (product.applications) specPairs.push(["Applications", product.applications]);
+      if (product.options) specPairs.push(["Options", product.options]);
+      if (product.description) specPairs.push(["Overview", product.description]);
+      specPairs.push(["MOQ", "Low minimums — contact us for details"]);
+      specPairs.push(["Sampling", "Fast sampling available"]);
+    }
+    var specsHtml = specPairs.map(function (pair) {
+      return '<div class="spec-row"><span class="spec-k">' + esc(pair[0]) + '</span><span class="spec-v">' + esc(pair[1]) + "</span></div>";
     }).join("");
     var specs = specsHtml
       ? '<h4>Specifications</h4><div class="spec-list">' + specsHtml + "</div>"
       : "";
-    var details = item.details
-      ? '<h4>Details</h4><p class="detail-text">' + esc(item.details) + "</p>"
+    var detailText = item.details || (product && product.description ? product.description : "");
+    var details = detailText
+      ? '<h4>Details</h4><p class="detail-text">' + esc(detailText) + "</p>"
+      : "";
+
+    // 详情图（最多6张）：后端 list 项为 { image: path }
+    var imgs = (item.detail_images || []).map(function (d) { return d && d.image ? d.image : (typeof d === "string" ? d : ""); }).filter(Boolean);
+    var galleryHtml = imgs.length
+      ? '<div class="style-modal-gallery"><h4>More Images</h4><div class="detail-thumbs">' +
+        imgs.map(function (src) {
+          return '<button type="button" class="detail-thumb" data-zoom="' + esc(src) + '"><img src="' + esc(src) + '" alt="Product detail"></button>';
+        }).join("") + "</div></div>"
       : "";
 
     wrap.innerHTML =
@@ -281,6 +314,7 @@
           specs + details +
           '<a href="contact.html" class="btn btn-primary style-modal-cta">Get a Quote for This Style →</a>' +
         "</div>" +
+        galleryHtml +
       "</div>";
     document.body.appendChild(wrap);
     document.body.classList.add("modal-open");
