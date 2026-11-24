@@ -321,10 +321,26 @@
     wrap.querySelectorAll("[data-modal-close]").forEach(function (el) {
       el.addEventListener("click", closeStyleDetail);
     });
+    // 详情图点击放大
+    wrap.querySelectorAll("[data-zoom]").forEach(function (el) {
+      el.addEventListener("click", function () {
+        var box = document.createElement("div");
+        box.className = "img-zoom";
+        box.innerHTML = '<img src="' + esc(el.getAttribute("data-zoom")) + '" alt="Product detail">';
+        box.addEventListener("click", function () { box.parentNode.removeChild(box); });
+        document.body.appendChild(box);
+      });
+    });
     document.addEventListener("keydown", styleModalKey);
   }
 
-  function styleModalKey(e) { if (e.key === "Escape") closeStyleDetail(); }
+  function styleModalKey(e) {
+    if (e.key === "Escape") {
+      var z = document.querySelector(".img-zoom");
+      if (z) { z.parentNode.removeChild(z); return; }
+      closeStyleDetail();
+    }
+  }
 
   function closeStyleDetail() {
     var m = document.querySelector(".style-modal");
