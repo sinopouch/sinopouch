@@ -22,6 +22,14 @@
 
   function esc(s) { return String(s == null ? "" : s); }
 
+  // Cloudflare Pages 会把 /page.html 重定向为 /page，这里统一文件名以便匹配
+  function pageName() {
+    var f = (window.location.pathname.split("/").pop() || "").toLowerCase();
+    if (!f) f = "index.html";
+    if (!/\.html?$/.test(f)) f = f + ".html";
+    return f;
+  }
+
   // ---- SVG icons for product categories ----
   function iconSvg(type) {
     var svgs = {
@@ -151,7 +159,7 @@
       "oem.html": "oem_banner",
       "contact.html": "contact_banner"
     };
-    var file = (window.location.pathname.split("/").pop() || "").toLowerCase();
+    var file = pageName();
     var key = map[file];
     if (key && p[key]) {
       var ph = document.querySelector(".page-hero");
@@ -189,7 +197,7 @@
   // 分类页：顶部海报 + 多款式图库
   function renderCategoryPage(products) {
     if (!products) return;
-    var file = (window.location.pathname.split("/").pop() || "").toLowerCase();
+    var file = pageName();
     var match = null;
     products.forEach(function (p) {
       if (p.page && p.page.toLowerCase() === file) match = p;
