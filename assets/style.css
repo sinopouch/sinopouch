@@ -281,33 +281,45 @@ table.data td:first-child { font-weight: 700; color: var(--green-deep); }
 /* Hero 有海报背景时：隐藏右侧叠加的产品图，让海报完整展现 */
 .hero.hero-has-banner .hero-art { display: none; }
 
-/* 奶油白海报：文字改深墨绿，遮罩改为极淡暖色，保证文字清楚又不压暗海报 */
+/* 海报原色显示：去掉所有遮罩，海报是什么颜色就显示什么颜色。
+   文字统一改深墨绿并加白色描边，保证在任何浅色海报上都清楚。 */
 .hero.hero-has-banner { color: var(--green-deep); }
-.hero.hero-has-banner::before {
-  content: ""; position: absolute; inset: 0;
-  background: linear-gradient(90deg, rgba(237,224,204,.92) 0%, rgba(237,224,204,.82) 38%, rgba(237,224,204,.25) 62%, transparent 100%);
-  z-index: 1;
+.hero.hero-has-banner::before { content: none; }
+.hero.hero-has-banner .eyebrow { color: #8A5A17 !important; }
+.hero.hero-has-banner p.lead {
+  color: #3F5149;
+  text-shadow: 0 1px 3px rgba(255,255,255,1), 0 0 10px rgba(255,255,255,.95);
+  background: linear-gradient(90deg, rgba(255,255,255,.82) 0%, rgba(255,255,255,.55) 70%, transparent 100%);
+  border-radius: 6px;
 }
-.hero.hero-has-banner .eyebrow { color: #8A5A17 !important; text-shadow: none; }
-.hero.hero-has-banner p.lead { color: #4A5C52; text-shadow: none; }
-.hero.hero-has-banner h1 { text-shadow: none; }
+.hero.hero-has-banner h1 { text-shadow: 0 1px 2px rgba(255,255,255,.9), 0 0 14px rgba(255,255,255,.75); }
 .hero.hero-has-banner h1 .accent { color: #B3791F; }
-.hero.hero-has-banner .btn-ghost { color: var(--green-deep); border-color: rgba(12,97,72,.55); }
-.hero.hero-has-banner .btn-ghost:hover { background: rgba(12,97,72,.08); }
-.page-hero.page-hero-has-banner { position: relative; }
-.page-hero.page-hero-has-banner::before {
-  content: ""; position: absolute; inset: 0;
-  background: linear-gradient(90deg, rgba(6,60,44,.88), rgba(6,60,44,.45));
-  z-index: 0;
-}
+.hero.hero-has-banner .btn-ghost { color: var(--green-deep); border-color: rgba(12,97,72,.55); background: rgba(255,255,255,.65); }
+.hero.hero-has-banner .btn-ghost:hover { background: rgba(255,255,255,.9); }
+
+.page-hero.page-hero-has-banner { position: relative; color: var(--green-deep); }
+.page-hero.page-hero-has-banner::before { content: none; }
+.page-hero.page-hero-has-banner h1 { text-shadow: 0 1px 2px rgba(255,255,255,.9), 0 0 14px rgba(255,255,255,.75); }
+.page-hero.page-hero-has-banner p { color: #3F5149; text-shadow: 0 1px 2px rgba(255,255,255,.9); }
+.page-hero.page-hero-has-banner .crumb { color: #5B7066; }
+.page-hero.page-hero-has-banner .crumb a { color: var(--green-deep); }
 .page-hero.page-hero-has-banner .container { position: relative; z-index: 1; }
-.cat-banner.cat-banner-has-image { position: relative; }
-.cat-banner.cat-banner-has-image::before {
-  content: ""; position: absolute; inset: 0;
-  background: linear-gradient(90deg, rgba(6,60,44,.88), rgba(6,60,44,.4));
-  z-index: 0;
-}
+
+.cat-banner.cat-banner-has-image { position: relative; color: var(--green-deep); }
+.cat-banner.cat-banner-has-image::before { content: none; }
+.cat-banner.cat-banner-has-image h1 { text-shadow: 0 1px 2px rgba(255,255,255,.95), 0 0 16px rgba(255,255,255,.8); }
+.cat-banner.cat-banner-has-image p { color: #3F5149; text-shadow: 0 1px 2px rgba(255,255,255,.95), 0 0 14px rgba(255,255,255,.7); }
+.cat-banner.cat-banner-has-image .crumb { color: #4F655B; }
+.cat-banner.cat-banner-has-image .crumb a { color: var(--green-deep); }
 .cat-banner.cat-banner-has-image .cat-banner-inner { position: relative; z-index: 1; }
+
+/* 海报完整显示：contain 保证整张图按比例铺进来，不裁掉内容 */
+.hero.hero-has-banner, .page-hero.page-hero-has-banner, .cat-banner.cat-banner-has-image {
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  background-color: #F4EFE6;
+}
 
 /* ---------- 导航悬浮下拉（Custom Products） ---------- */
 .nav-has-dropdown { position: relative; }
