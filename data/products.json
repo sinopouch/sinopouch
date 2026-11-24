@@ -6,7 +6,12 @@
       "name": "Coffee Bags",
       "tag_style": "amber",
       "page": "coffee-bags.html",
-      "gallery": [],
+      "gallery": [
+        {
+          "image": "/assets/uploads/图片处理需求-6-.png",
+          "title": "Colorful Flat Bottom Heat Seal Coffee Bags"
+        }
+      ],
       "icon": "coffee",
       "tag": "",
       "image": "/assets/uploads/2.png",
