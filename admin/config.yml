@@ -83,10 +83,13 @@ collections:
                 widget: "list"
                 required: false
                 summary: "{{fields.title}}"
-                hint: "放同一个类别下不同花纹/款式的产品图，前端会排成一行展示。"
+                hint: "放同一个类别下不同花纹/款式的产品图。客户点击款式图会弹出详情页，可填参数和说明。"
                 fields:
                   - { label: "款式图片", name: "image", widget: "image", required: false, hint: "建议方图或竖图，800×800 左右" }
                   - { label: "款式名称", name: "title", widget: "string", required: false, hint: "如 Matte Black / Kraft Window" }
+                  - { label: "一句话简介", name: "desc", widget: "string", required: false, hint: "详情页标题下方的一句话介绍" }
+                  - { label: "产品参数", name: "specs", widget: "text", required: false, hint: "每行一条参数，如：材质：PET/PE；容量：250g；印刷：凹版10色" }
+                  - { label: "详细说明", name: "details", widget: "text", required: false, hint: "详情页正文，可写工艺、适用场景、起订量等" }
 
   # ----------------------------------------------------------
   # 3. 首页内容（Hero 海报文案 + 产品区 + 工厂区）
