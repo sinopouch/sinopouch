@@ -61,7 +61,7 @@
       "gallery": [],
       "icon": "spout",
       "tag": "",
-      "image": "",
+      "image": "/assets/uploads/1-1-.png",
       "description": "Stand-up pouches with a resealable spout and cap — lightweight, leak-proof and shatter-resistant for liquids.",
       "options": "spout size, cap color"
     },
@@ -74,7 +74,7 @@
       "gallery": [],
       "icon": "shaped",
       "tag": "",
-      "image": "",
+      "image": "/assets/uploads/1-1-.png",
       "description": "Die-cut pouches in custom shapes that stand out on shelf — rounded, arched, window-cut or brand-specific silhouettes.",
       "options": "custom die-cut, window"
     },
@@ -87,7 +87,7 @@
       "gallery": [],
       "icon": "standup",
       "tag": "",
-      "image": "",
+      "image": "/assets/uploads/4-3-.png",
       "description": "The classic doypack — stable base, resealable zip and optional window. The go-to format across almost every category.",
       "options": "zip, window, tear notch"
     }
