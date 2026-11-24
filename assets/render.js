@@ -22,6 +22,70 @@
 
   function esc(s) { return String(s == null ? "" : s); }
 
+  // 轻量 Markdown 渲染：支持图片、表格、标题、列表、加粗、链接、段落（后台富文本用）
+  function md(s) {
+    var src = String(s == null ? "" : s).replace(/\r\n?/g, "\n");
+    var lines = src.split("\n"), out = [], i = 0;
+    function inline(t) {
+      return esc(t)
+        .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" loading="lazy">')
+        .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>')
+        .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
+        .replace(/(^|[^*])\*([^*]+)\*/g, "$1<em>$2</em>");
+    }
+    function flush(para) {
+      if (para.length) out.push("<p>" + inline(para.join(" ")) + "</p>");
+    }
+    while (i < lines.length) {
+      var line = lines[i];
+      // 表格：| a | b | 后跟 |---|---|
+      if (line.indexOf("|") >= 0 && i + 1 < lines.length && /^\s*\|?[\s:|-]+\|?\s*$/.test(lines[i + 1]) && lines[i + 1].indexOf("-") >= 0) {
+        flush([]);
+        var head = line.replace(/^\s*\|/, "").replace(/\|\s*$/, "").split("|").map(function (x) { return x.trim(); });
+        i += 2;
+        var rows = [];
+        while (i < lines.length && lines[i].indexOf("|") >= 0) {
+          rows.push(lines[i].replace(/^\s*\|/, "").replace(/\|\s*$/, "").split("|").map(function (x) { return x.trim(); }));
+          i++;
+        }
+        out.push('<table class="md-table"><thead><tr>' + head.map(function (h) { return "<th>" + inline(h) + "</th>"; }).join("") +
+          "</tr></thead><tbody>" + rows.map(function (r) {
+            return "<tr>" + r.map(function (c) { return "<td>" + inline(c) + "</td>"; }).join("") + "</tr>";
+          }).join("") + "</tbody></table>");
+        continue;
+      }
+      // 标题
+      var h = line.match(/^(#{1,6})\s+(.*)$/);
+      if (h) { flush([]); var lv = h[1].length; out.push("<h" + lv + ">" + inline(h[2]) + "</h" + lv + ">"); i++; continue; }
+      // 图片独占一行
+      var im = line.match(/^\s*!\[([^\]]*)\]\(([^)]+)\)\s*$/);
+      if (im) { flush([]); out.push('<p class="md-img"><img src="' + esc(im[2]) + '" alt="' + esc(im[1]) + '" loading="lazy"></p>'); i++; continue; }
+      // 列表
+      var li = line.match(/^\s*[-*+]\s+(.*)$/);
+      var ol = line.match(/^\s*\d+[.)]\s+(.*)$/);
+      if (li || ol) {
+        flush([]);
+        var tag = ol ? "ol" : "ul", items = [];
+        while (i < lines.length) {
+          var m2 = lines[i].match(/^\s*[-*+]\s+(.*)$/) || lines[i].match(/^\s*\d+[.)]\s+(.*)$/);
+          if (!m2) break;
+          items.push("<li>" + inline(m2[1]) + "</li>"); i++;
+        }
+        out.push("<" + tag + ">" + items.join("") + "</" + tag + ">");
+        continue;
+      }
+      // 空行分段
+      if (!line.trim()) { flush([]); i++; continue; }
+      // 普通文字累积成段
+      var para = [];
+      while (i < lines.length && lines[i].trim() && !/^(#{1,6})\s/.test(lines[i]) && !/^\s*!\[/.test(lines[i]) && lines[i].indexOf("|") < 0 && !/^\s*[-*+]\s/.test(lines[i]) && !/^\s*\d+[.)]\s/.test(lines[i])) {
+        para.push(lines[i].trim()); i++;
+      }
+      flush(para);
+    }
+    return out.join("");
+  }
+
   // Cloudflare Pages 会把 /page.html 重定向为 /page，这里统一文件名以便匹配
   function pageName() {
     var f = (window.location.pathname.split("/").pop() || "").toLowerCase();
@@ -238,9 +302,14 @@
         var im = g.image
           ? '<img class="gallery-img" src="' + esc(g.image) + '" alt="' + esc(g.title || "Pouch") + '">'
           : '<div class="gallery-img gallery-empty">图片待上传</div>';
-        return '<button type="button" class="gallery-item" data-gallery-index="' + i + '" aria-label="View details">' + im +
-          (g.title ? '<span class="gallery-cap">' + esc(g.title) + "</span>" : "") +
-          '<span class="gallery-view">View details →</span></button>';
+        return '<article class="gallery-item" data-gallery-index="' + i + '" role="button" tabindex="0" aria-label="View details">' +
+          '<div class="gallery-media">' + im + "</div>" +
+          '<div class="gallery-text">' +
+            (g.title ? '<h3 class="gallery-cap">' + esc(g.title) + "</h3>" : "") +
+            (g.desc ? '<p class="gallery-desc">' + esc(g.desc) + "</p>" : "") +
+          "</div>" +
+          '<button type="button" class="gallery-more" data-gallery-index="' + i + '">read more <span aria-hidden="true">›</span></button>' +
+          "</article>";
       }).join("");
       gal.style.display = "";
       bindGallery(gal, match.gallery, match);
@@ -250,9 +319,17 @@
   // 款式详情弹窗
   function bindGallery(gal, items, product) {
     gal.querySelectorAll("[data-gallery-index]").forEach(function (btn) {
-      btn.addEventListener("click", function () {
+      btn.addEventListener("click", function (e) {
+        e.stopPropagation();
         var item = items[parseInt(btn.getAttribute("data-gallery-index"), 10)];
         if (item) openStyleDetail(item, product);
+      });
+      btn.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          var item = items[parseInt(btn.getAttribute("data-gallery-index"), 10)];
+          if (item) openStyleDetail(item, product);
+        }
       });
     });
   }
@@ -266,8 +343,19 @@
     var wrap = document.createElement("div");
     wrap.className = "style-modal";
     var categoryName = product && product.name ? product.name : "Product";
+    var title = item.title || "Product style";
 
-    // 后台填的参数优先；没填则用产品分类自带信息作为默认参数，保证点进去有内容
+    // 图片：主图 + 详情图，合并去重，最多 5 张
+    var imgs = [];
+    if (item.image) imgs.push(item.image);
+    (item.detail_images || []).forEach(function (d) {
+      var src = d && d.image ? d.image : (typeof d === "string" ? d : "");
+      if (src && imgs.indexOf(src) < 0) imgs.push(src);
+    });
+    imgs = imgs.slice(0, 5);
+    var mainSrc = imgs[0] || "";
+
+    // 参数：后台填的优先，没填则用分类信息兜底
     var specPairs = splitLines(item.specs).map(function (line) {
       var parts = line.split(/[：:]/);
       return parts.length > 1
@@ -285,49 +373,70 @@
       return '<div class="spec-row"><span class="spec-k">' + esc(pair[0]) + '</span><span class="spec-v">' + esc(pair[1]) + "</span></div>";
     }).join("");
     var specs = specsHtml
-      ? '<h4>Specifications</h4><div class="spec-list">' + specsHtml + "</div>"
-      : "";
-    var detailText = item.details || (product && product.description ? product.description : "");
-    var details = detailText
-      ? '<h4>Details</h4><p class="detail-text">' + esc(detailText) + "</p>"
+      ? '<div class="spec-table">' + specsHtml + "</div>"
       : "";
 
-    // 详情图（最多6张）：后端 list 项为 { image: path }
-    var imgs = (item.detail_images || []).map(function (d) { return d && d.image ? d.image : (typeof d === "string" ? d : ""); }).filter(Boolean);
-    var galleryHtml = imgs.length
-      ? '<div class="style-modal-gallery"><h4>More Images</h4><div class="detail-thumbs">' +
-        imgs.map(function (src) {
-          return '<button type="button" class="detail-thumb" data-zoom="' + esc(src) + '"><img src="' + esc(src) + '" alt="Product detail"></button>';
-        }).join("") + "</div></div>"
+    // 左侧大图 + 缩略图
+    var leftHtml = mainSrc
+      ? '<div class="sd-media">' +
+          '<div class="sd-main"><img class="sd-main-img" src="' + esc(mainSrc) + '" alt="' + esc(title) + '"></div>' +
+          (imgs.length > 1
+            ? '<div class="sd-thumbs">' + imgs.map(function (src, i) {
+                return '<button type="button" class="sd-thumb' + (i === 0 ? " is-active" : "") + '" data-src="' + esc(src) + '" aria-label="Image ' + (i + 1) + '"><img src="' + esc(src) + '" alt=""></button>';
+              }).join("") + "</div>"
+            : "") +
+        "</div>"
+      : "";
+
+    // 右侧信息 + 社交分享
+    var shareUrl = encodeURIComponent(location.href.split("#")[0]);
+    var shareText = encodeURIComponent("Check out " + title + " from SinoPouch");
+    var shareHtml =
+      '<div class="sd-share">' +
+        '<a class="sd-share-btn sd-sh-f" href="https://www.facebook.com/sharer/sharer.php?u=' + shareUrl + '" target="_blank" rel="noopener" aria-label="Share on Facebook">f</a>' +
+        '<a class="sd-share-btn sd-sh-x" href="https://twitter.com/intent/tweet?url=' + shareUrl + '&text=' + shareText + '" target="_blank" rel="noopener" aria-label="Share on X">X</a>' +
+        '<a class="sd-share-btn sd-sh-in" href="https://www.linkedin.com/sharing/share-offsite/?url=' + shareUrl + '" target="_blank" rel="noopener" aria-label="Share on LinkedIn">in</a>' +
+        '<a class="sd-share-btn sd-sh-p" href="https://pinterest.com/pin/create/button/?url=' + shareUrl + '" target="_blank" rel="noopener" aria-label="Share on Pinterest">P</a>' +
+        '<a class="sd-share-btn sd-sh-wa" href="https://wa.me/?text=' + shareText + "%20" + shareUrl + '" target="_blank" rel="noopener" aria-label="Share on WhatsApp">W</a>' +
+      "</div>";
+
+    // 下方详细描述（富文本，可插图/表格/文字）
+    var rich = item.content || item.details || "";
+    // 描述区标题可由用户在富文本里自己写；没写标题则补一个默认标题
+    var hasOwnTitle = /^\s*#{1,4}\s+\S/m.test(rich);
+    var richHtml = rich
+      ? '<div class="sd-rich">' + (hasOwnTitle ? "" : '<h4 class="sd-rich-title">Product Introduction</h4>') + md(rich) + "</div>"
       : "";
 
     wrap.innerHTML =
       '<div class="style-modal-backdrop" data-modal-close></div>' +
       '<div class="style-modal-box" role="dialog" aria-modal="true" aria-label="Product details">' +
         '<button type="button" class="style-modal-close" data-modal-close aria-label="Close">×</button>' +
-        (item.image ? '<div class="style-modal-img"><img src="' + esc(item.image) + '" alt="' + esc(item.title || "Pouch") + '"></div>' : "") +
-        '<div class="style-modal-body">' +
-          '<div class="crumb">' + esc(categoryName || "Product") + " / Style</div>" +
-          '<h3>' + esc(item.title || "Product style") + "</h3>" +
-          (item.desc ? '<p class="style-desc">' + esc(item.desc) + "</p>" : "") +
-          specs + details +
-          '<a href="contact.html" class="btn btn-primary style-modal-cta">Get a Quote for This Style →</a>' +
+        '<div class="sd-grid">' +
+          leftHtml +
+          '<div class="style-modal-body">' +
+            '<div class="crumb">' + esc(categoryName || "Product") + " / " + esc(title) + "</div>" +
+            '<h3>' + esc(title) + "</h3>" +
+            (item.desc ? '<p class="style-desc">' + esc(item.desc) + "</p>" : "") +
+            specs +
+            '<a href="contact.html?style=' + encodeURIComponent(title) + '" class="btn btn-primary style-modal-cta">Send Inquiry</a>' +
+            shareHtml +
+          "</div>" +
         "</div>" +
-        galleryHtml +
+        richHtml +
       "</div>";
     document.body.appendChild(wrap);
     document.body.classList.add("modal-open");
     wrap.querySelectorAll("[data-modal-close]").forEach(function (el) {
       el.addEventListener("click", closeStyleDetail);
     });
-    // 详情图点击放大
-    wrap.querySelectorAll("[data-zoom]").forEach(function (el) {
-      el.addEventListener("click", function () {
-        var box = document.createElement("div");
-        box.className = "img-zoom";
-        box.innerHTML = '<img src="' + esc(el.getAttribute("data-zoom")) + '" alt="Product detail">';
-        box.addEventListener("click", function () { box.parentNode.removeChild(box); });
-        document.body.appendChild(box);
+    // 缩略图切换大图
+    var mainImg = wrap.querySelector(".sd-main-img");
+    wrap.querySelectorAll(".sd-thumb").forEach(function (t) {
+      t.addEventListener("click", function () {
+        if (mainImg) mainImg.src = t.getAttribute("data-src");
+        wrap.querySelectorAll(".sd-thumb").forEach(function (x) { x.classList.remove("is-active"); });
+        t.classList.add("is-active");
       });
     });
     document.addEventListener("keydown", styleModalKey);
