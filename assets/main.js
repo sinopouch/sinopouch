@@ -31,32 +31,54 @@ document.addEventListener("DOMContentLoaded", function () {
     wa.setAttribute("href", "https://wa.me/" + window.SINOPOUCH_CONFIG.whatsapp);
   }
 
-  // Contact form -> compose an email (no backend needed for a starter site)
+  // Contact form -> send to Web3Forms inbox and show inline confirmation
   var form = document.getElementById("inquiryForm");
   if (form) {
     form.addEventListener("submit", function (e) {
       e.preventDefault();
+      var note = document.getElementById("formNote");
+      var btn = form.querySelector('button[type="submit"]');
       var data = new FormData(form);
-      var name = data.get("name") || "";
-      var company = data.get("company") || "";
-      var email = data.get("email") || "";
-      var product = data.get("product") || "";
-      var qty = data.get("qty") || "";
-      var msg = data.get("message") || "";
-      var subject = "Website inquiry - " + (product || "Packaging") + " - " + name;
-      var body =
-        "Name: " + name + "\n" +
-        "Company: " + company + "\n" +
-        "Email: " + email + "\n" +
-        "Interested in: " + product + "\n" +
-        "Estimated quantity: " + qty + "\n\n" +
-        "Message:\n" + msg;
-      var mailto = "mailto:" + window.SINOPOUCH_CONFIG.email +
-        "?subject=" + encodeURIComponent(subject) +
-        "&body=" + encodeURIComponent(body);
-      window.location.href = mailto;
-      var ok = document.getElementById("formNote");
-      if (ok) { ok.textContent = "Thank you! Your email app will open with the inquiry ready to send."; }
+      var name = (data.get("name") || "").toString().trim();
+      if (name) { data.set("subject", "Website inquiry - " + name); }
+      if (btn) { btn.disabled = true; btn.textContent = "Sending..."; }
+      if (note) { note.textContent = "Sending your inquiry..."; }
+
+      fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: data,
+        headers: { "Accept": "application/json" }
+      })
+      .then(function (response) {
+        // Web3Forms returns JSON for browser requests, but may return an HTML
+        // success page in some cases. Treat any 2xx as success unless JSON says failure.
+        return response.clone().json().then(function (result) {
+          return { ok: response.ok && result.success !== false, message: result.message };
+        }).catch(function () {
+          return { ok: response.ok, message: "" };
+        });
+      })
+      .then(function (res) {
+        if (res.ok) {
+          if (note) {
+            note.textContent = "Thank you! We have received your inquiry and will reply within 24 hours.";
+            note.style.color = "var(--green-deep)";
+          }
+          form.reset();
+        } else {
+          if (note) {
+            note.textContent = "Sorry, something went wrong. Please email us directly at " + window.SINOPOUCH_CONFIG.email + ".";
+          }
+        }
+      })
+      .catch(function () {
+        if (note) {
+          note.textContent = "Network error. Please email us directly at " + window.SINOPOUCH_CONFIG.email + ".";
+        }
+      })
+      .finally(function () {
+        if (btn) { btn.disabled = false; btn.textContent = "Send Inquiry →"; }
+      });
     });
   }
 });
