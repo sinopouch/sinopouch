@@ -2,7 +2,7 @@
   "products": [
     {
       "applications": "whole bean, ground coffee",
-      "banner_image": "",
+      "banner_image": "/assets/uploads/0-2.png",
       "name": "Coffee Bags",
       "tag_style": "amber",
       "page": "coffee-bags.html",
