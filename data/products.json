@@ -50,7 +50,7 @@
     },
     {
       "applications": "bread, bakery, pastries",
-      "banner_image": "",
+      "banner_image": "/assets/uploads/banner-6.png",
       "name": "Bread Bags",
       "tag_style": "amber",
       "page": "bread-bags.html",
