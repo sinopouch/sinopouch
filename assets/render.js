@@ -117,8 +117,6 @@
       var heroEl = document.querySelector(".hero");
       if (heroEl) {
         heroEl.style.backgroundImage = "url('" + esc(c.hero_banner) + "')";
-        heroEl.style.backgroundSize = "cover";
-        heroEl.style.backgroundPosition = "center";
         heroEl.classList.add("hero-has-banner");
       }
     }
@@ -165,8 +163,6 @@
       var ph = document.querySelector(".page-hero");
       if (ph) {
         ph.style.backgroundImage = "url('" + esc(p[key]) + "')";
-        ph.style.backgroundSize = "cover";
-        ph.style.backgroundPosition = "center";
         ph.classList.add("page-hero-has-banner");
       }
     }
@@ -208,8 +204,6 @@
       var banner = document.querySelector(".cat-banner");
       if (banner) {
         banner.style.backgroundImage = "url('" + esc(match.banner_image) + "')";
-        banner.style.backgroundSize = "cover";
-        banner.style.backgroundPosition = "center";
         banner.classList.add("cat-banner-has-image");
       }
       var art = document.querySelector(".cat-banner-art");
