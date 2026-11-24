@@ -41,13 +41,15 @@ document.addEventListener("DOMContentLoaded", function () {
       var data = new FormData(form);
       var name = (data.get("name") || "").toString().trim();
       if (name) { data.set("subject", "Website inquiry - " + name); }
+      var payload = {};
+      data.forEach(function (value, key) { payload[key] = value; });
       if (btn) { btn.disabled = true; btn.textContent = "Sending..."; }
       if (note) { note.textContent = "Sending your inquiry..."; }
 
       fetch("https://api.web3forms.com/submit", {
         method: "POST",
-        body: data,
-        headers: { "Accept": "application/json" }
+        headers: { "Content-Type": "application/json", "Accept": "application/json" },
+        body: JSON.stringify(payload)
       })
       .then(function (response) {
         // Web3Forms returns JSON for browser requests, but may return an HTML
