@@ -71,8 +71,17 @@ img { max-width: 100%; display: block; }
   align-items: center; padding: 84px 0 88px; position: relative; z-index: 2;
 }
 .hero-inner > div:first-child { padding-left: 0; }
-/* 有海报时文字块左移到海报留白区，避免压住袋子 */
-.hero.hero-has-banner .hero-inner > div:first-child { margin-left: -85px; max-width: 500px; }
+/* 有海报时：文字块左移到留白区、收紧上下间距，适配按海报比例缩放后的高度（仅宽屏） */
+@media (min-width: 1200px) {
+  .hero.hero-has-banner .hero-inner { padding: 26px 0; }
+  .hero.hero-has-banner .hero-inner > div:first-child { margin-left: -85px; max-width: 500px; }
+  .hero.hero-has-banner h1 { font-size: clamp(1.9rem, 3.4vw, 2.9rem); margin: 8px 0 10px; }
+  .hero.hero-has-banner p.lead { font-size: 1rem; margin: 12px 0 18px; line-height: 1.5; }
+}
+/* 窄屏有海报时：文字加淡白底保证在海报上可读 */
+@media (max-width: 1199px) {
+  .hero.hero-has-banner .hero-inner > div:first-child { background: linear-gradient(90deg, rgba(255,255,255,.88), rgba(255,255,255,.6) 80%, transparent); border-radius: 8px; padding: 16px; margin-left: -16px; }
+}
 .hero h1 { font-size: clamp(2.1rem, 4.2vw, 3.3rem); line-height: 1.15; font-weight: 800; letter-spacing: -.5px; }
 .hero h1 .accent { color: var(--amber); }
 .hero p.lead { font-size: 1.12rem; color: #d7e8e1; margin: 20px 0 30px; max-width: 560px; }
