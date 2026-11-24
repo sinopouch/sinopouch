@@ -41,15 +41,13 @@ document.addEventListener("DOMContentLoaded", function () {
       var data = new FormData(form);
       var name = (data.get("name") || "").toString().trim();
       if (name) { data.set("subject", "Website inquiry - " + name); }
-      var payload = {};
-      data.forEach(function (value, key) { payload[key] = value; });
       if (btn) { btn.disabled = true; btn.textContent = "Sending..."; }
       if (note) { note.textContent = "Sending your inquiry..."; }
 
+      // 用 FormData 直接提交（简单请求，不触发浏览器 CORS 预检，兼容性最好）
       fetch("https://api.web3forms.com/submit", {
         method: "POST",
-        headers: { "Content-Type": "application/json", "Accept": "application/json" },
-        body: JSON.stringify(payload)
+        body: data
       })
       .then(function (response) {
         // Web3Forms returns JSON for browser requests, but may return an HTML
