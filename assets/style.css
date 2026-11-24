@@ -280,10 +280,6 @@ table.data td:first-child { font-weight: 700; color: var(--green-deep); }
 /* Hero 有海报背景时：隐藏右侧叠加的产品图，让海报完整展现 */
 .hero.hero-has-banner .hero-art { display: none; }
 
-/* 海报按宽屏比例完整显示（不裁切包装袋），精确比例由 render.js 读取图片后自动设置 */
-.hero.hero-has-banner { aspect-ratio: 2.2 / 1; }
-.hero.hero-has-banner .hero-inner { padding: 24px 0; }
-
 /* 减轻遮罩，保留海报本色；文字加阴影保证可读 */
 .hero.hero-has-banner::before {
   content: ""; position: absolute; inset: 0;
