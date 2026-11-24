@@ -329,6 +329,12 @@ table.data td:first-child { font-weight: 700; color: var(--green-deep); }
 .page-hero.page-hero-has-banner .crumb { color: #5B7066; }
 .page-hero.page-hero-has-banner .crumb a { color: var(--green-deep); }
 .page-hero.page-hero-has-banner .container { position: relative; z-index: 1; }
+/* 宽屏下把内页文字整体移到左下留白区（纯 transform，不改布局；窄屏保持原样避免出界） */
+@media (min-width: 1500px) {
+  .page-hero.page-hero-has-banner .container > .crumb,
+  .page-hero.page-hero-has-banner .container > h1,
+  .page-hero.page-hero-has-banner .container > p { transform: translate(-228px, 100px); }
+}
 
 .cat-banner.cat-banner-has-image { position: relative; color: var(--green-deep); }
 .cat-banner.cat-banner-has-image::before { content: none; }
