@@ -75,7 +75,7 @@ img { max-width: 100%; display: block; }
 @media (min-width: 1200px) {
   .hero.hero-has-banner { height: 520px; }
   .hero.hero-has-banner .hero-inner { padding: 26px 0; }
-  .hero.hero-has-banner .hero-inner > div:first-child { margin-left: -85px; max-width: 500px; }
+  .hero.hero-has-banner .hero-inner > div:first-child { margin-left: -85px; max-width: 500px; transform: translate(-164px, 70px); }
   .hero.hero-has-banner h1 { font-size: clamp(1.9rem, 3.4vw, 2.9rem); margin: 8px 0 10px; }
   .hero.hero-has-banner p.lead {
     font-size: 1rem; margin: 12px 0 18px; line-height: 1.5;
@@ -327,6 +327,10 @@ table.data td:first-child { font-weight: 700; color: var(--green-deep); }
 .cat-banner.cat-banner-has-image .crumb { color: #4F655B; }
 .cat-banner.cat-banner-has-image .crumb a { color: var(--green-deep); }
 .cat-banner.cat-banner-has-image .cat-banner-inner { position: relative; z-index: 1; }
+/* 有海报时文字块移到左下（按用户指定位置），仅宽屏生效 */
+@media (min-width: 1200px) {
+  .cat-banner.cat-banner-has-image .cat-banner-inner > div:first-child { transform: translate(-115px, 72px); }
+}
 
 /* 海报完整显示：contain 保证整张图按比例铺进来，不裁掉内容 */
 .hero.hero-has-banner, .page-hero.page-hero-has-banner, .cat-banner.cat-banner-has-image {
