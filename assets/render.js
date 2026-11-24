@@ -205,6 +205,15 @@
       if (banner) {
         banner.style.backgroundImage = "url('" + esc(match.banner_image) + "')";
         banner.classList.add("cat-banner-has-image");
+        // 让 banner 高度跟随海报比例，海报完整铺满且不裁切/不留边
+        var probe = new Image();
+        probe.onload = function () {
+          if (probe.naturalWidth && probe.naturalHeight) {
+            var ratio = probe.naturalWidth / probe.naturalHeight;
+            if (ratio >= 1.5 && ratio <= 5) banner.style.aspectRatio = ratio + " / 1";
+          }
+        };
+        probe.src = match.banner_image;
       }
       var art = document.querySelector(".cat-banner-art");
       if (art) art.style.display = "none";
@@ -212,17 +221,82 @@
       var art2 = document.querySelector(".cat-banner-art");
       if (art2) art2.innerHTML = '<img class="photo-art" src="' + esc(match.image) + '" alt="' + esc(match.name) + '">';
     }
-    // 多款式图库
+    // 多款式图库（可点击查看详情）
     var gal = document.querySelector("[data-product-gallery]");
     if (gal && match.gallery && match.gallery.length) {
-      gal.innerHTML = match.gallery.map(function (g) {
+      gal.innerHTML = match.gallery.map(function (g, i) {
         var im = g.image
           ? '<img class="gallery-img" src="' + esc(g.image) + '" alt="' + esc(g.title || "Pouch") + '">'
           : '<div class="gallery-img gallery-empty">图片待上传</div>';
-        return '<div class="gallery-item">' + im + (g.title ? '<span class="gallery-cap">' + esc(g.title) + "</span>" : "") + "</div>";
+        return '<button type="button" class="gallery-item" data-gallery-index="' + i + '" aria-label="View details">' + im +
+          (g.title ? '<span class="gallery-cap">' + esc(g.title) + "</span>" : "") +
+          '<span class="gallery-view">View details →</span></button>';
       }).join("");
       gal.style.display = "";
+      bindGallery(gal, match.gallery, match.name);
     }
+  }
+
+  // 款式详情弹窗
+  function bindGallery(gal, items, categoryName) {
+    gal.querySelectorAll("[data-gallery-index]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var item = items[parseInt(btn.getAttribute("data-gallery-index"), 10)];
+        if (item) openStyleDetail(item, categoryName);
+      });
+    });
+  }
+
+  function splitLines(s) {
+    return String(s || "").split(/\r?\n/).map(function (x) { return x.trim(); }).filter(Boolean);
+  }
+
+  function openStyleDetail(item, categoryName) {
+    closeStyleDetail();
+    var wrap = document.createElement("div");
+    wrap.className = "style-modal";
+
+    var specsHtml = splitLines(item.specs).map(function (line) {
+      var parts = line.split(/[：:]/);
+      var k = parts.length > 1 ? parts[0].trim() : "Detail";
+      var v = parts.length > 1 ? parts.slice(1).join(":").trim() : line;
+      return '<div class="spec-row"><span class="spec-k">' + esc(k) + '</span><span class="spec-v">' + esc(v) + "</span></div>";
+    }).join("");
+    var specs = specsHtml
+      ? '<h4>Specifications</h4><div class="spec-list">' + specsHtml + "</div>"
+      : "";
+    var details = item.details
+      ? '<h4>Details</h4><p class="detail-text">' + esc(item.details) + "</p>"
+      : "";
+
+    wrap.innerHTML =
+      '<div class="style-modal-backdrop" data-modal-close></div>' +
+      '<div class="style-modal-box" role="dialog" aria-modal="true" aria-label="Product details">' +
+        '<button type="button" class="style-modal-close" data-modal-close aria-label="Close">×</button>' +
+        (item.image ? '<div class="style-modal-img"><img src="' + esc(item.image) + '" alt="' + esc(item.title || "Pouch") + '"></div>' : "") +
+        '<div class="style-modal-body">' +
+          '<div class="crumb">' + esc(categoryName || "Product") + " / Style</div>" +
+          '<h3>' + esc(item.title || "Product style") + "</h3>" +
+          (item.desc ? '<p class="style-desc">' + esc(item.desc) + "</p>" : "") +
+          specs + details +
+          '<a href="contact.html" class="btn btn-primary style-modal-cta">Get a Quote for This Style →</a>' +
+        "</div>" +
+      "</div>";
+    document.body.appendChild(wrap);
+    document.body.classList.add("modal-open");
+    wrap.querySelectorAll("[data-modal-close]").forEach(function (el) {
+      el.addEventListener("click", closeStyleDetail);
+    });
+    document.addEventListener("keydown", styleModalKey);
+  }
+
+  function styleModalKey(e) { if (e.key === "Escape") closeStyleDetail(); }
+
+  function closeStyleDetail() {
+    var m = document.querySelector(".style-modal");
+    if (m) m.parentNode.removeChild(m);
+    document.body.classList.remove("modal-open");
+    document.removeEventListener("keydown", styleModalKey);
   }
 
   // 导航：Products → Custom Products + 悬浮下拉（从产品数据生成）
