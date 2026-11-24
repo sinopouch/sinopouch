@@ -99,7 +99,7 @@
       var after = c.home_hero_after || "";
       hero.innerHTML = esc(before) + (accent ? ' <span class="accent">' + esc(accent) + "</span>" : "") + (after ? " " + esc(after) : "");
     }
-    // Hero 海报背景（上传后按图片真实比例铺满，避免裁切两侧产品）
+    // Hero 海报背景（上传后铺满 hero，文字改为白色叠加）
     if (c.hero_banner) {
       var heroEl = document.querySelector(".hero");
       if (heroEl) {
@@ -107,15 +107,6 @@
         heroEl.style.backgroundSize = "cover";
         heroEl.style.backgroundPosition = "center";
         heroEl.classList.add("hero-has-banner");
-        // 读取图片真实宽高比，动态设置 Hero 比例，任何尺寸的图都不会被裁
-        var bannerProbe = new Image();
-        bannerProbe.onload = function () {
-          if (bannerProbe.naturalWidth && bannerProbe.naturalHeight) {
-            var ratio = bannerProbe.naturalWidth / bannerProbe.naturalHeight;
-            if (ratio > 1.2 && ratio < 4) heroEl.style.aspectRatio = ratio + " / 1";
-          }
-        };
-        bannerProbe.src = c.hero_banner;
       }
     }
     // 右侧产品图
