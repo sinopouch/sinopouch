@@ -63,7 +63,7 @@
     },
     {
       "applications": "beverages, sauces, purees, liquids",
-      "banner_image": "",
+      "banner_image": "/assets/uploads/banner-7.png",
       "name": "Spout Pouches",
       "tag_style": "green",
       "page": "spout-pouches.html",
@@ -76,7 +76,7 @@
     },
     {
       "applications": "gifts, candy, promotional",
-      "banner_image": "",
+      "banner_image": "/assets/uploads/banner-8.png",
       "name": "Special Shaped Bags",
       "tag_style": "amber",
       "page": "special-shaped-bags.html",
