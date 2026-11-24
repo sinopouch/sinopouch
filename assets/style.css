@@ -277,12 +277,18 @@ table.data td:first-child { font-weight: 700; color: var(--green-deep); }
 .product-thumb .photo-thumb { width: 100%; height: 100%; object-fit: contain; display: block; padding: 16px; background: #fff; }
 .factory-shot .photo-factory { width: 100%; height: 170px; object-fit: cover; display: block; }
 
-/* Hero 有海报背景时：加暗色遮罩保证白字可读 */
+/* Hero 有海报背景时：隐藏右侧叠加的产品图，让海报完整展现 */
+.hero.hero-has-banner .hero-art { display: none; }
+
+/* 减轻遮罩，保留海报本色；文字加阴影保证可读 */
 .hero.hero-has-banner::before {
   content: ""; position: absolute; inset: 0;
-  background: linear-gradient(90deg, rgba(6,60,44,.82) 0%, rgba(6,60,44,.5) 60%, rgba(6,60,44,.2) 100%);
+  background: linear-gradient(90deg, rgba(6,60,44,.62) 0%, rgba(6,60,44,.28) 55%, rgba(6,60,44,.05) 100%);
   z-index: 1;
 }
+.hero.hero-has-banner h1,
+.hero.hero-has-banner p.lead,
+.hero.hero-has-banner .eyebrow { text-shadow: 0 2px 12px rgba(0,0,0,.45); }
 .page-hero.page-hero-has-banner { position: relative; }
 .page-hero.page-hero-has-banner::before {
   content: ""; position: absolute; inset: 0;
