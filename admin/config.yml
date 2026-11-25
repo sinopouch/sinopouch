@@ -88,7 +88,6 @@ collections:
                   - { label: "款式主图", name: "image", widget: "image", required: false, hint: "卡片封面，也是详情第一张大图。建议方图或竖图，800×800 左右" }
                   - { label: "款式名称", name: "title", widget: "string", required: false, hint: "如 Matte Black / Kraft Window" }
                   - { label: "一句话简介", name: "desc", widget: "text", required: false, hint: "显示在卡片标题下方，可写 2-3 行介绍" }
-                  - { label: "产品参数（每行一条）", name: "specs", widget: "text", required: false, hint: "如：Material：PET/PE；Size：250g；MOQ：10000 pcs。显示在详情右侧" }
                   - label: "详情图片（连同主图最多5张）"
                     name: "detail_images"
                     widget: "list"
