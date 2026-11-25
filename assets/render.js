@@ -52,6 +52,8 @@
       }
       var h = line.match(/^(#{1,6})\s+(.*)$/);
       if (h) { flush([]); var lv = h[1].length; out.push("<h" + lv + ">" + inline(h[2]) + "</h" + lv + ">"); i++; continue; }
+      // 空图片占位 ![]() 或不完整图片语法：跳过，避免死循环
+      if (/^\s*!\[[^\]]*\]\(\s*\)\s*$/.test(line)) { i++; continue; }
       var im = line.match(/^\s*!\[([^\]]*)\]\(([^)]+)\)\s*$/);
       if (im) { flush([]); out.push('<p class="md-img"><img src="' + esc(im[2]) + '" alt="' + esc(im[1]) + '" loading="lazy"></p>'); i++; continue; }
       var li = line.match(/^\s*[-*+]\s+(.*)$/);
@@ -69,9 +71,11 @@
       }
       if (!line.trim()) { flush([]); i++; continue; }
       var para = [];
+      var before = i;
       while (i < lines.length && lines[i].trim() && !/^(#{1,6})\s/.test(lines[i]) && !/^\s*!\[/.test(lines[i]) && lines[i].indexOf("|") < 0 && !/^\s*[-*+]\s/.test(lines[i]) && !/^\s*\d+[.)]\s/.test(lines[i])) {
         para.push(lines[i].trim()); i++;
       }
+      if (i === before) { i++; continue; } // 保险：任何未识别的行都跳过，杜绝死循环
       flush(para);
     }
     return out.join("");
