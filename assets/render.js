@@ -2,9 +2,6 @@
    SinoPouch - data renderer
    从 data/*.json 读取数据，自动填充到页面。
    后台（Decap CMS）修改 JSON 后，前台自动更新。
-   - data-bind          → data/content.json（首页文案）
-   - data-bind-page     → data/pages.json（内页文案）
-   - data-bind          → data/site.json（联系方式，键名不冲突）
    ============================================================ */
 
 (function () {
@@ -38,7 +35,6 @@
     }
     while (i < lines.length) {
       var line = lines[i];
-      // 表格：| a | b | 后跟 |---|---|
       if (line.indexOf("|") >= 0 && i + 1 < lines.length && /^\s*\|?[\s:|-]+\|?\s*$/.test(lines[i + 1]) && lines[i + 1].indexOf("-") >= 0) {
         flush([]);
         var head = line.replace(/^\s*\|/, "").replace(/\|\s*$/, "").split("|").map(function (x) { return x.trim(); });
@@ -54,13 +50,10 @@
           }).join("") + "</tbody></table>");
         continue;
       }
-      // 标题
       var h = line.match(/^(#{1,6})\s+(.*)$/);
       if (h) { flush([]); var lv = h[1].length; out.push("<h" + lv + ">" + inline(h[2]) + "</h" + lv + ">"); i++; continue; }
-      // 图片独占一行
       var im = line.match(/^\s*!\[([^\]]*)\]\(([^)]+)\)\s*$/);
       if (im) { flush([]); out.push('<p class="md-img"><img src="' + esc(im[2]) + '" alt="' + esc(im[1]) + '" loading="lazy"></p>'); i++; continue; }
-      // 列表
       var li = line.match(/^\s*[-*+]\s+(.*)$/);
       var ol = line.match(/^\s*\d+[.)]\s+(.*)$/);
       if (li || ol) {
@@ -74,9 +67,7 @@
         out.push("<" + tag + ">" + items.join("") + "</" + tag + ">");
         continue;
       }
-      // 空行分段
       if (!line.trim()) { flush([]); i++; continue; }
-      // 普通文字累积成段
       var para = [];
       while (i < lines.length && lines[i].trim() && !/^(#{1,6})\s/.test(lines[i]) && !/^\s*!\[/.test(lines[i]) && lines[i].indexOf("|") < 0 && !/^\s*[-*+]\s/.test(lines[i]) && !/^\s*\d+[.)]\s/.test(lines[i])) {
         para.push(lines[i].trim()); i++;
@@ -94,7 +85,6 @@
     return f;
   }
 
-  // ---- SVG icons for product categories ----
   function iconSvg(type) {
     var svgs = {
       coffee: '<svg viewBox="0 0 120 140" xmlns="http://www.w3.org/2000/svg"><path d="M20 34 L100 34 L106 124 Q106 132 98 132 L22 132 Q14 132 14 124 Z" fill="#fff" stroke="#21A179" stroke-width="2.5"/><path d="M20 34 L100 34 L98 52 L22 52 Z" fill="#21A179" opacity=".35"/><rect x="55" y="20" width="10" height="14" rx="2" fill="#21A179"/><circle cx="60" cy="88" r="20" fill="#F2A93B" opacity=".9"/></svg>',
@@ -161,14 +151,11 @@
     });
   }
 
-  // 首页：Hero 海报背景 + 文案 + 主图；工厂三图
   function renderHome(c) {
-    // 首页文案：所有 data-bind 元素从 content.json 填充（site.json 不含这些键）
     document.querySelectorAll("[data-bind]").forEach(function (el) {
       var key = el.getAttribute("data-bind");
       if (c[key] !== undefined) el.textContent = c[key];
     });
-    // Hero 文案
     var hero = document.querySelector("[data-hero-title]");
     if (hero) {
       var before = c.home_hero_before || "";
@@ -176,21 +163,18 @@
       var after = c.home_hero_after || "";
       hero.innerHTML = esc(before) + (accent ? ' <span class="accent">' + esc(accent) + "</span>" : "") + (after ? " " + esc(after) : "");
     }
-    // Hero 海报背景（上传后铺满 hero，文字改为白色叠加）
     if (c.hero_banner) {
       var heroEl = document.querySelector(".hero");
       if (heroEl) {
         heroEl.style.backgroundImage = "url('" + esc(c.hero_banner) + "')";
+        heroEl.style.setProperty("--hero-banner", "url('" + esc(c.hero_banner) + "')");
         heroEl.classList.add("hero-has-banner");
-        // 宽屏：固定更高高度 + cover 放大海报，让袋子更大更醒目（CSS 控制尺寸与背景模式）
       }
     }
-    // 右侧产品图
     var heroArt = document.querySelector(".hero-art");
     if (heroArt && c.hero_image) {
       heroArt.innerHTML = '<img class="photo-art" src="' + esc(c.hero_image) + '" alt="Custom pouches">';
     }
-    // 工厂三图 + 说明文字
     var shots = document.querySelectorAll(".factory-shot");
     ["1", "2", "3"].forEach(function (n, i) {
       if (!shots[i]) return;
@@ -209,14 +193,11 @@
     });
   }
 
-  // 内页：通用顶部 banner（图片 + 标题 + 副标题）
   function renderInnerBanners(p) {
-    // 纯文字绑定（data-bind-page）
     document.querySelectorAll("[data-bind-page]").forEach(function (el) {
       var key = el.getAttribute("data-bind-page");
       if (p[key] !== undefined) el.textContent = p[key];
     });
-    // 顶部 banner 图：给对应 section 加背景
     var map = {
       "products.html": "products_banner",
       "oem.html": "oem_banner",
@@ -229,7 +210,6 @@
       if (ph) {
         ph.style.backgroundImage = "url('" + esc(p[key]) + "')";
         ph.classList.add("page-hero-has-banner");
-        // banner 高度跟随海报比例，海报完整铺满且不裁切/不留边（与分类页一致）
         var phProbe = new Image();
         phProbe.onload = function () {
           if (phProbe.naturalWidth && phProbe.naturalHeight) {
@@ -242,7 +222,6 @@
     }
   }
 
-  // OEM 定制流程（从 pages.json 渲染，可后台增删）
   function renderOemSteps(p) {
     var wrap = document.querySelector("[data-oem-steps]");
     if (!wrap || !p.oem_steps || !p.oem_steps.length) return;
@@ -251,7 +230,6 @@
     }).join("");
   }
 
-  // 认证页：左图右文证书列表（可后台增删）
   function renderCertificates(p) {
     var wrap = document.querySelector("[data-certificates]");
     if (!wrap || !p.certificates || !p.certificates.length) return;
@@ -264,7 +242,6 @@
     }).join("");
   }
 
-  // 分类页：顶部海报 + 多款式图库
   function renderCategoryPage(products) {
     if (!products) return;
     var file = pageName();
@@ -273,13 +250,11 @@
       if (p.page && p.page.toLowerCase() === file) match = p;
     });
     if (!match) return;
-    // 顶部海报
     if (match.banner_image) {
       var banner = document.querySelector(".cat-banner");
       if (banner) {
         banner.style.backgroundImage = "url('" + esc(match.banner_image) + "')";
         banner.classList.add("cat-banner-has-image");
-        // 让 banner 高度跟随海报比例，海报完整铺满且不裁切/不留边
         var probe = new Image();
         probe.onload = function () {
           if (probe.naturalWidth && probe.naturalHeight) {
@@ -295,57 +270,47 @@
       var art2 = document.querySelector(".cat-banner-art");
       if (art2) art2.innerHTML = '<img class="photo-art" src="' + esc(match.image) + '" alt="' + esc(match.name) + '">';
     }
-    // 多款式图库（可点击查看详情）
     var gal = document.querySelector("[data-product-gallery]");
     if (gal && match.gallery && match.gallery.length) {
       gal.innerHTML = match.gallery.map(function (g, i) {
         var im = g.image
           ? '<img class="gallery-img" src="' + esc(g.image) + '" alt="' + esc(g.title || "Pouch") + '">'
           : '<div class="gallery-img gallery-empty">图片待上传</div>';
-        return '<article class="gallery-item" data-gallery-index="' + i + '" role="button" tabindex="0" aria-label="View details">' +
+        var href = "product-detail.html?c=" + encodeURIComponent(match.page || "") + "&i=" + i;
+        return '<a class="gallery-item" href="' + href + '" aria-label="View details">' +
           '<div class="gallery-media">' + im + "</div>" +
           '<div class="gallery-text">' +
             (g.title ? '<h3 class="gallery-cap">' + esc(g.title) + "</h3>" : "") +
             (g.desc ? '<p class="gallery-desc">' + esc(g.desc) + "</p>" : "") +
           "</div>" +
-          '<button type="button" class="gallery-more" data-gallery-index="' + i + '">read more <span aria-hidden="true">›</span></button>' +
-          "</article>";
+          '<span class="gallery-more">read more <span aria-hidden="true">›</span></span>' +
+          "</a>";
       }).join("");
       gal.style.display = "";
-      bindGallery(gal, match.gallery, match);
     }
   }
 
-  // 款式详情弹窗
-  function bindGallery(gal, items, product) {
-    gal.querySelectorAll("[data-gallery-index]").forEach(function (btn) {
-      btn.addEventListener("click", function (e) {
-        e.stopPropagation();
-        var item = items[parseInt(btn.getAttribute("data-gallery-index"), 10)];
-        if (item) openStyleDetail(item, product);
-      });
-      btn.addEventListener("keydown", function (e) {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          var item = items[parseInt(btn.getAttribute("data-gallery-index"), 10)];
-          if (item) openStyleDetail(item, product);
-        }
-      });
+  // 独立产品详情页：按 URL 参数 c=分类页 i=款式序号 渲染
+  function renderProductDetail(products) {
+    var host = document.getElementById("detailContent");
+    if (!host) return;
+    var qs = new URLSearchParams(location.search);
+    var cat = qs.get("c") || "";
+    var idx = parseInt(qs.get("i"), 10);
+    if (isNaN(idx) || idx < 0) idx = 0;
+    var product = null, item = null;
+    (products || []).forEach(function (p) {
+      if (p.page && p.page.toLowerCase() === cat.toLowerCase()) product = p;
     });
-  }
-
-  function splitLines(s) {
-    return String(s || "").split(/\r?\n/).map(function (x) { return x.trim(); }).filter(Boolean);
-  }
-
-  function openStyleDetail(item, product) {
-    closeStyleDetail();
-    var wrap = document.createElement("div");
-    wrap.className = "style-modal";
+    if (product && product.gallery && product.gallery[idx]) item = product.gallery[idx];
+    if (!item) {
+      host.innerHTML = '<div class="section"><p>Product not found. <a href="products.html">Back to products</a></p></div>';
+      return;
+    }
     var categoryName = product && product.name ? product.name : "Product";
     var title = item.title || "Product style";
+    document.title = title + " | SinoPouch";
 
-    // 图片：主图 + 详情图，合并去重，最多 5 张
     var imgs = [];
     if (item.image) imgs.push(item.image);
     (item.detail_images || []).forEach(function (d) {
@@ -354,29 +319,6 @@
     });
     imgs = imgs.slice(0, 5);
     var mainSrc = imgs[0] || "";
-
-    // 参数：后台填的优先，没填则用分类信息兜底
-    var specPairs = splitLines(item.specs).map(function (line) {
-      var parts = line.split(/[：:]/);
-      return parts.length > 1
-        ? [parts[0].trim(), parts.slice(1).join(":").trim()]
-        : ["Detail", line];
-    });
-    if (!specPairs.length && product) {
-      if (product.applications) specPairs.push(["Applications", product.applications]);
-      if (product.options) specPairs.push(["Options", product.options]);
-      if (product.description) specPairs.push(["Overview", product.description]);
-      specPairs.push(["MOQ", "Low minimums — contact us for details"]);
-      specPairs.push(["Sampling", "Fast sampling available"]);
-    }
-    var specsHtml = specPairs.map(function (pair) {
-      return '<div class="spec-row"><span class="spec-k">' + esc(pair[0]) + '</span><span class="spec-v">' + esc(pair[1]) + "</span></div>";
-    }).join("");
-    var specs = specsHtml
-      ? '<div class="spec-table">' + specsHtml + "</div>"
-      : "";
-
-    // 左侧大图 + 缩略图
     var leftHtml = mainSrc
       ? '<div class="sd-media">' +
           '<div class="sd-main"><img class="sd-main-img" src="' + esc(mainSrc) + '" alt="' + esc(title) + '"></div>' +
@@ -388,35 +330,44 @@
         "</div>"
       : "";
 
-    // 右侧信息 + 社交分享
+    // 参数表：用产品分类自带信息兜底（后台已取消逐款参数字段）
+    var specPairs = [];
+    if (product) {
+      if (product.applications) specPairs.push(["Applications", product.applications]);
+      if (product.options) specPairs.push(["Options", product.options]);
+      if (product.description) specPairs.push(["Overview", product.description]);
+    }
+    specPairs.push(["MOQ", "Low minimums — contact us for details"]);
+    specPairs.push(["Sampling", "Fast sampling available"]);
+    var specs = '<div class="spec-table">' + specPairs.map(function (pair) {
+      return '<div class="spec-row"><span class="spec-k">' + esc(pair[0]) + '</span><span class="spec-v">' + esc(pair[1]) + "</span></div>";
+    }).join("") + "</div>";
+
     var shareUrl = encodeURIComponent(location.href.split("#")[0]);
     var shareText = encodeURIComponent("Check out " + title + " from SinoPouch");
     var shareHtml =
       '<div class="sd-share">' +
-        '<a class="sd-share-btn sd-sh-f" href="https://www.facebook.com/sharer/sharer.php?u=' + shareUrl + '" target="_blank" rel="noopener" aria-label="Share on Facebook">f</a>' +
-        '<a class="sd-share-btn sd-sh-x" href="https://twitter.com/intent/tweet?url=' + shareUrl + '&text=' + shareText + '" target="_blank" rel="noopener" aria-label="Share on X">X</a>' +
-        '<a class="sd-share-btn sd-sh-in" href="https://www.linkedin.com/sharing/share-offsite/?url=' + shareUrl + '" target="_blank" rel="noopener" aria-label="Share on LinkedIn">in</a>' +
-        '<a class="sd-share-btn sd-sh-p" href="https://pinterest.com/pin/create/button/?url=' + shareUrl + '" target="_blank" rel="noopener" aria-label="Share on Pinterest">P</a>' +
-        '<a class="sd-share-btn sd-sh-wa" href="https://wa.me/?text=' + shareText + "%20" + shareUrl + '" target="_blank" rel="noopener" aria-label="Share on WhatsApp">W</a>' +
+        '<a class="sd-share-btn sd-sh-f" href="https://www.facebook.com/sharer/sharer.php?u=' + shareUrl + '" target="_blank" rel="noopener" aria-label="Facebook">f</a>' +
+        '<a class="sd-share-btn sd-sh-x" href="https://twitter.com/intent/tweet?url=' + shareUrl + '&text=' + shareText + '" target="_blank" rel="noopener" aria-label="X">X</a>' +
+        '<a class="sd-share-btn sd-sh-in" href="https://www.linkedin.com/sharing/share-offsite/?url=' + shareUrl + '" target="_blank" rel="noopener" aria-label="LinkedIn">in</a>' +
+        '<a class="sd-share-btn sd-sh-p" href="https://pinterest.com/pin/create/button/?url=' + shareUrl + '" target="_blank" rel="noopener" aria-label="Pinterest">P</a>' +
+        '<a class="sd-share-btn sd-sh-wa" href="https://wa.me/?text=' + shareText + '%20' + shareUrl + '" target="_blank" rel="noopener" aria-label="WhatsApp">W</a>' +
       "</div>";
 
-    // 下方详细描述（富文本，可插图/表格/文字）
     var rich = item.content || item.details || "";
-    // 描述区标题可由用户在富文本里自己写；没写标题则补一个默认标题
     var hasOwnTitle = /^\s*#{1,4}\s+\S/m.test(rich);
     var richHtml = rich
       ? '<div class="sd-rich">' + (hasOwnTitle ? "" : '<h4 class="sd-rich-title">Product Introduction</h4>') + md(rich) + "</div>"
       : "";
 
-    wrap.innerHTML =
-      '<div class="style-modal-backdrop" data-modal-close></div>' +
-      '<div class="style-modal-box" role="dialog" aria-modal="true" aria-label="Product details">' +
-        '<button type="button" class="style-modal-close" data-modal-close aria-label="Close">×</button>' +
+    var backHref = esc(product && product.page ? product.page : "products.html");
+    host.innerHTML =
+      '<div class="detail-box">' +
+        '<div class="crumb"><a href="index.html">Home</a> / <a href="products.html">Products</a> / <a href="' + backHref + '">' + esc(categoryName) + "</a> / " + esc(title) + "</div>" +
         '<div class="sd-grid">' +
           leftHtml +
           '<div class="style-modal-body">' +
-            '<div class="crumb">' + esc(categoryName || "Product") + " / " + esc(title) + "</div>" +
-            '<h3>' + esc(title) + "</h3>" +
+            "<h1>" + esc(title) + "</h1>" +
             (item.desc ? '<p class="style-desc">' + esc(item.desc) + "</p>" : "") +
             specs +
             '<a href="contact.html?style=' + encodeURIComponent(title) + '" class="btn btn-primary style-modal-cta">Send Inquiry</a>' +
@@ -424,40 +375,19 @@
           "</div>" +
         "</div>" +
         richHtml +
+        '<div class="detail-back"><a href="' + backHref + '">← Back to ' + esc(categoryName) + "</a></div>" +
       "</div>";
-    document.body.appendChild(wrap);
-    document.body.classList.add("modal-open");
-    wrap.querySelectorAll("[data-modal-close]").forEach(function (el) {
-      el.addEventListener("click", closeStyleDetail);
-    });
-    // 缩略图切换大图
-    var mainImg = wrap.querySelector(".sd-main-img");
-    wrap.querySelectorAll(".sd-thumb").forEach(function (t) {
+
+    var mainImg = host.querySelector(".sd-main-img");
+    host.querySelectorAll(".sd-thumb").forEach(function (t) {
       t.addEventListener("click", function () {
         if (mainImg) mainImg.src = t.getAttribute("data-src");
-        wrap.querySelectorAll(".sd-thumb").forEach(function (x) { x.classList.remove("is-active"); });
+        host.querySelectorAll(".sd-thumb").forEach(function (x) { x.classList.remove("is-active"); });
         t.classList.add("is-active");
       });
     });
-    document.addEventListener("keydown", styleModalKey);
   }
 
-  function styleModalKey(e) {
-    if (e.key === "Escape") {
-      var z = document.querySelector(".img-zoom");
-      if (z) { z.parentNode.removeChild(z); return; }
-      closeStyleDetail();
-    }
-  }
-
-  function closeStyleDetail() {
-    var m = document.querySelector(".style-modal");
-    if (m) m.parentNode.removeChild(m);
-    document.body.classList.remove("modal-open");
-    document.removeEventListener("keydown", styleModalKey);
-  }
-
-  // 导航：Products → Custom Products + 悬浮下拉（从产品数据生成）
   function renderNavDropdown(products) {
     var host = document.querySelector("[data-nav-products]");
     if (!host || !products) return;
@@ -487,6 +417,7 @@
       renderOemSteps(cache.pages);
       renderCertificates(cache.pages);
       renderCategoryPage(cache.products.products);
+      renderProductDetail(cache.products.products);
       renderNavDropdown(cache.products.products);
     })
     .catch(function (e) {

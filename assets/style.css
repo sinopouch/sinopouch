@@ -82,9 +82,26 @@ img { max-width: 100%; display: block; }
     background: rgba(255,255,255,.92); padding: 6px 10px; border-radius: 6px;
   }
 }
-/* 窄屏有海报时：文字加淡白底保证在海报上可读 */
-@media (max-width: 1199px) {
-  .hero.hero-has-banner .hero-inner > div:first-child { background: linear-gradient(90deg, rgba(255,255,255,.88), rgba(255,255,255,.6) 80%, transparent); border-radius: 8px; padding: 16px; margin-left: -16px; }
+/* 中屏（720-1199px）：海报 + 白色文字阴影，保证可读且不贴边 */
+@media (min-width: 721px) and (max-width: 1199px) {
+  .hero.hero-has-banner .hero-inner { padding: 60px 22px; }
+  .hero.hero-has-banner .hero-inner > div:first-child { background: none; padding-left: 0; margin-left: 0; }
+  .hero.hero-has-banner h1 { text-shadow: 0 1px 3px rgba(255,255,255,.95), 0 0 12px rgba(255,255,255,.85); }
+  .hero.hero-has-banner p.lead { color: #3F5149; text-shadow: 0 1px 3px rgba(255,255,255,.95), 0 0 10px rgba(255,255,255,.8); }
+}
+/* 手机端（≤720px）：海报显示在上方独立横幅，文字在下方米白区，互不遮挡 */
+@media (max-width: 720px) {
+  .hero.hero-has-banner { background-image: none !important; background: #F7F1E7 !important; padding-top: 190px; position: relative; }
+  .hero.hero-has-banner::after {
+    content: ""; position: absolute; top: 0; left: 0; right: 0; height: 190px;
+    background-image: var(--hero-banner); background-size: cover; background-position: center 35%;
+    background-repeat: no-repeat; border-bottom: 3px solid var(--green);
+  }
+  .hero.hero-has-banner .hero-inner { padding: 30px 22px 44px; }
+  .hero.hero-has-banner .hero-inner > div:first-child { background: none; padding-left: 0; margin-left: 0; }
+  .hero.hero-has-banner h1 { color: var(--green-deep); text-shadow: none; }
+  .hero.hero-has-banner p.lead { color: #3F5149; text-shadow: none; }
+  .hero.hero-has-banner .btn-ghost { color: var(--green-deep); border-color: var(--green-deep); background: transparent; }
 }
 .hero h1 { font-size: clamp(2.1rem, 4.2vw, 3.3rem); line-height: 1.15; font-weight: 800; letter-spacing: -.5px; }
 .hero h1 .accent { color: var(--amber); }
@@ -494,4 +511,22 @@ body.modal-open { overflow: hidden; }
   .grid-2, .grid-4, .form-row { grid-template-columns: 1fr; }
   .section { padding: 58px 0; }
   .footer-grid { grid-template-columns: 1fr; }
+}
+
+/* ---------- 独立产品详情页 ---------- */
+.detail-page { padding: 34px 0 60px; }
+.detail-box { background: #fff; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; box-shadow: var(--shadow); }
+.detail-box > .crumb { padding: 18px 30px 0; }
+.detail-box .sd-grid { border-top: 14px solid transparent; }
+.detail-box .sd-media { align-self: stretch; }
+.detail-box .style-modal-body h1 { font-size: 1.9rem; }
+.detail-box .sd-rich { border-top: 1px solid var(--line); }
+.detail-back { padding: 20px 32px 30px; }
+.detail-back a { color: var(--green); font-weight: 600; text-decoration: none; }
+.detail-back a:hover { text-decoration: underline; }
+@media (max-width: 720px) {
+  .detail-box > .crumb { padding: 16px 18px 0; }
+  .detail-box .sd-grid { border-top-width: 8px; }
+  .detail-back { padding: 16px 20px 24px; }
+  .detail-box .style-modal-body h1 { font-size: 1.5rem; }
 }
