@@ -315,14 +315,10 @@
     var title = item.title || "Product style";
     document.title = title + " | SinoPouch";
 
+    // 顶部大图：款式主图 + 「详情图片」字段，严格按后台顺序，最多5张
+    // 「下方详细描述」里的图只显示在页面下方正文，不进入顶部切换，避免混在一起
     var imgs = [];
     if (item.image && imgs.indexOf(item.image) < 0) imgs.push(item.image);
-    // 把「下方详细描述」里插入的图片也纳入顶部切换（避免用户在两个地方重复上传）
-    var richSource = item.content || item.details || "";
-    String(richSource).replace(/!\[[^\]]*\]\(([^)]+)\)/g, function (m, src) {
-      if (src && imgs.indexOf(src) < 0) imgs.push(src);
-      return m;
-    });
     (item.detail_images || []).forEach(function (d) {
       var src = d && d.image ? d.image : (typeof d === "string" ? d : "");
       if (src && imgs.indexOf(src) < 0) imgs.push(src);
