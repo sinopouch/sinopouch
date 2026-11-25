@@ -19,13 +19,24 @@
 
   function esc(s) { return String(s == null ? "" : s); }
 
+  // 给上传图片加缓存版本号：CDN 缓存旧图时，换版本号即可强制刷新。
+  // 只处理本站 /assets/uploads/ 图片，外链图片原样返回。
+  var IMG_VERSION = "20261125f";
+  function imgv(u) {
+    u = String(u == null ? "" : u);
+    if (!u) return u;
+    if (u.indexOf("/assets/uploads/") < 0) return u;
+    if (u.indexOf("?") >= 0) return u; // 已有参数就不重复加
+    return u + "?v=" + IMG_VERSION;
+  }
+
   // 轻量 Markdown 渲染：支持图片、表格、标题、列表、加粗、链接、段落（后台富文本用）
   function md(s) {
     var src = String(s == null ? "" : s).replace(/\r\n?/g, "\n");
     var lines = src.split("\n"), out = [], i = 0;
     function inline(t) {
       return esc(t)
-        .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" loading="lazy">')
+        .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, function (m, alt, src) { return '<img src="' + imgv(src) + '" alt="' + alt + '" loading="lazy">'; })
         .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>')
         .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
         .replace(/(^|[^*])\*([^*]+)\*/g, "$1<em>$2</em>");
@@ -55,7 +66,7 @@
       // 空图片占位 ![]() 或不完整图片语法：跳过，避免死循环
       if (/^\s*!\[[^\]]*\]\(\s*\)\s*$/.test(line)) { i++; continue; }
       var im = line.match(/^\s*!\[([^\]]*)\]\(([^)]+)\)\s*$/);
-      if (im) { flush([]); out.push('<p class="md-img"><img src="' + esc(im[2]) + '" alt="' + esc(im[1]) + '" loading="lazy"></p>'); i++; continue; }
+      if (im) { flush([]); out.push('<p class="md-img"><img src="' + esc(imgv(im[2])) + '" alt="' + esc(im[1]) + '" loading="lazy"></p>'); i++; continue; }
       var li = line.match(/^\s*[-*+]\s+(.*)$/);
       var ol = line.match(/^\s*\d+[.)]\s+(.*)$/);
       if (li || ol) {
@@ -104,7 +115,7 @@
 
   function thumbHtml(p) {
     if (p && p.image) {
-      return '<img class="photo-thumb" src="' + esc(p.image) + '" alt="' + esc(p.name || "Pouch") + '">';
+      return '<img class="photo-thumb" src="' + esc(imgv(p.image)) + '" alt="' + esc(p.name || "Pouch") + '">';
     }
     return iconSvg(p && p.icon);
   }
@@ -170,14 +181,14 @@
     if (c.hero_banner) {
       var heroEl = document.querySelector(".hero");
       if (heroEl) {
-        heroEl.style.backgroundImage = "url('" + esc(c.hero_banner) + "')";
-        heroEl.style.setProperty("--hero-banner", "url('" + esc(c.hero_banner) + "')");
+        heroEl.style.backgroundImage = "url('" + esc(imgv(c.hero_banner)) + "')";
+        heroEl.style.setProperty("--hero-banner", "url('" + esc(imgv(c.hero_banner)) + "')");
         heroEl.classList.add("hero-has-banner");
       }
     }
     var heroArt = document.querySelector(".hero-art");
     if (heroArt && c.hero_image) {
-      heroArt.innerHTML = '<img class="photo-art" src="' + esc(c.hero_image) + '" alt="Custom pouches">';
+      heroArt.innerHTML = '<img class="photo-art" src="' + esc(imgv(c.hero_image)) + '" alt="Custom pouches">';
     }
     var shots = document.querySelectorAll(".factory-shot");
     ["1", "2", "3"].forEach(function (n, i) {
@@ -189,7 +200,7 @@
         if (old) {
           var img = document.createElement("img");
           img.className = "photo-factory";
-          img.src = c["factory_image_" + n];
+          img.src = imgv(c["factory_image_" + n]);
           img.alt = label ? label.textContent : "Factory";
           old.parentNode.replaceChild(img, old);
         }
@@ -212,7 +223,7 @@
     if (key && p[key]) {
       var ph = document.querySelector(".page-hero");
       if (ph) {
-        ph.style.backgroundImage = "url('" + esc(p[key]) + "')";
+        ph.style.backgroundImage = "url('" + esc(imgv(p[key])) + "')";
         ph.classList.add("page-hero-has-banner");
         var phProbe = new Image();
         phProbe.onload = function () {
@@ -221,7 +232,7 @@
             if (phRatio >= 1.5 && phRatio <= 5) ph.style.aspectRatio = phRatio + " / 1";
           }
         };
-        phProbe.src = p[key];
+        phProbe.src = imgv(p[key]);
       }
     }
   }
@@ -239,7 +250,7 @@
     if (!wrap || !p.certificates || !p.certificates.length) return;
     wrap.innerHTML = p.certificates.map(function (c) {
       var img = c.image
-        ? '<div class="cert-logo"><img src="' + esc(c.image) + '" alt="' + esc(c.title) + '"></div>'
+        ? '<div class="cert-logo"><img src="' + esc(imgv(c.image)) + '" alt="' + esc(c.title) + '"></div>'
         : '<div class="cert-logo cert-placeholder">✓</div>';
       return '<div class="cert-row">' + img +
         '<div class="cert-copy"><h3>' + esc(c.title) + "</h3><p>" + esc(c.text) + "</p></div></div>";
@@ -257,7 +268,7 @@
     if (match.banner_image) {
       var banner = document.querySelector(".cat-banner");
       if (banner) {
-        banner.style.backgroundImage = "url('" + esc(match.banner_image) + "')";
+        banner.style.backgroundImage = "url('" + esc(imgv(match.banner_image)) + "')";
         banner.classList.add("cat-banner-has-image");
         var probe = new Image();
         probe.onload = function () {
@@ -266,20 +277,20 @@
             if (ratio >= 1.5 && ratio <= 5) banner.style.aspectRatio = ratio + " / 1";
           }
         };
-        probe.src = match.banner_image;
+        probe.src = imgv(match.banner_image);
       }
       var art = document.querySelector(".cat-banner-art");
       if (art) art.style.display = "none";
     } else if (match.image) {
       var art2 = document.querySelector(".cat-banner-art");
-      if (art2) art2.innerHTML = '<img class="photo-art" src="' + esc(match.image) + '" alt="' + esc(match.name) + '">';
+      if (art2) art2.innerHTML = '<img class="photo-art" src="' + esc(imgv(match.image)) + '" alt="' + esc(match.name) + '">';
     }
     var gal = document.querySelector("[data-product-gallery]");
     var galSection = gal ? gal.closest("section") : null;
     if (gal && match.gallery && match.gallery.length) {
       gal.innerHTML = match.gallery.map(function (g, i) {
         var im = g.image
-          ? '<img class="gallery-img" src="' + esc(g.image) + '" alt="' + esc(g.title || "Pouch") + '">'
+          ? '<img class="gallery-img" src="' + esc(imgv(g.image)) + '" alt="' + esc(g.title || "Pouch") + '">'
           : '<div class="gallery-img gallery-empty">图片待上传</div>';
         var href = "product-detail.html?c=" + encodeURIComponent(match.page || "") + "&i=" + i;
         return '<a class="gallery-item" href="' + href + '" aria-label="View details">' +
@@ -331,10 +342,10 @@
     var mainSrc = imgs[0] || "";
     var leftHtml = mainSrc
       ? '<div class="sd-media">' +
-          '<div class="sd-main"><img class="sd-main-img" src="' + esc(mainSrc) + '" alt="' + esc(title) + '"></div>' +
+          '<div class="sd-main"><img class="sd-main-img" src="' + esc(imgv(mainSrc)) + '" alt="' + esc(title) + '"></div>' +
           (imgs.length > 1
             ? '<div class="sd-thumbs">' + imgs.map(function (src, i) {
-                return '<button type="button" class="sd-thumb' + (i === 0 ? " is-active" : "") + '" data-src="' + esc(src) + '" aria-label="Image ' + (i + 1) + '"><img src="' + esc(src) + '" alt=""></button>';
+                return '<button type="button" class="sd-thumb' + (i === 0 ? " is-active" : "") + '" data-src="' + esc(imgv(src)) + '" aria-label="Image ' + (i + 1) + '"><img src="' + esc(imgv(src)) + '" alt=""></button>';
               }).join("") + "</div>"
             : "") +
         "</div>"
