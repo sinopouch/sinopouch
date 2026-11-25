@@ -316,7 +316,13 @@
     document.title = title + " | SinoPouch";
 
     var imgs = [];
-    if (item.image) imgs.push(item.image);
+    if (item.image && imgs.indexOf(item.image) < 0) imgs.push(item.image);
+    // 把「下方详细描述」里插入的图片也纳入顶部切换（避免用户在两个地方重复上传）
+    var richSource = item.content || item.details || "";
+    String(richSource).replace(/!\[[^\]]*\]\(([^)]+)\)/g, function (m, src) {
+      if (src && imgs.indexOf(src) < 0) imgs.push(src);
+      return m;
+    });
     (item.detail_images || []).forEach(function (d) {
       var src = d && d.image ? d.image : (typeof d === "string" ? d : "");
       if (src && imgs.indexOf(src) < 0) imgs.push(src);
@@ -333,19 +339,6 @@
             : "") +
         "</div>"
       : "";
-
-    // 参数表：用产品分类自带信息兜底（后台已取消逐款参数字段）
-    var specPairs = [];
-    if (product) {
-      if (product.applications) specPairs.push(["Applications", product.applications]);
-      if (product.options) specPairs.push(["Options", product.options]);
-      if (product.description) specPairs.push(["Overview", product.description]);
-    }
-    specPairs.push(["MOQ", "Low minimums — contact us for details"]);
-    specPairs.push(["Sampling", "Fast sampling available"]);
-    var specs = '<div class="spec-table">' + specPairs.map(function (pair) {
-      return '<div class="spec-row"><span class="spec-k">' + esc(pair[0]) + '</span><span class="spec-v">' + esc(pair[1]) + "</span></div>";
-    }).join("") + "</div>";
 
     var shareUrl = encodeURIComponent(location.href.split("#")[0]);
     var shareText = encodeURIComponent("Check out " + title + " from SinoPouch");
@@ -373,7 +366,6 @@
           '<div class="style-modal-body">' +
             "<h1>" + esc(title) + "</h1>" +
             (item.desc ? '<p class="style-desc">' + esc(item.desc) + "</p>" : "") +
-            specs +
             '<a href="contact.html?style=' + encodeURIComponent(title) + '" class="btn btn-primary style-modal-cta">Send Inquiry</a>' +
             shareHtml +
           "</div>" +
