@@ -271,6 +271,7 @@
       if (art2) art2.innerHTML = '<img class="photo-art" src="' + esc(match.image) + '" alt="' + esc(match.name) + '">';
     }
     var gal = document.querySelector("[data-product-gallery]");
+    var galSection = gal ? gal.closest("section") : null;
     if (gal && match.gallery && match.gallery.length) {
       gal.innerHTML = match.gallery.map(function (g, i) {
         var im = g.image
@@ -287,6 +288,9 @@
           "</a>";
       }).join("");
       gal.style.display = "";
+      if (galSection) galSection.style.display = "";
+    } else if (galSection) {
+      galSection.style.display = "none";
     }
   }
 
