@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://sinopouch.com/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
-  <url><loc>https://sinopouch.com/products.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://sinopouch.com/oem.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://sinopouch.com/certifications.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://sinopouch.com/contact.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://sinopouch.com/products</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://sinopouch.com/coffee-bags</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://sinopouch.com/mylar-bags</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://sinopouch.com/pet-food-bags</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://sinopouch.com/bread-bags</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://sinopouch.com/spout-pouches</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://sinopouch.com/special-shaped-bags</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://sinopouch.com/stand-up-pouches</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://sinopouch.com/oem</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://sinopouch.com/certifications</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://sinopouch.com/contact</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
 </urlset>
