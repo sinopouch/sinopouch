@@ -155,7 +155,17 @@
       "name": "Mylar Bags",
       "tag_style": "green",
       "page": "mylar-bags.html",
-      "gallery": [],
+      "gallery": [
+        {
+          "image": "/assets/uploads/m1-1-.png",
+          "title": "Custom Mylar Packaging Bags",
+          "detail_images": [
+            "/assets/uploads/m1-2-.png",
+            "/assets/uploads/m1-3-.png",
+            "/assets/uploads/m1-4-.png"
+          ]
+        }
+      ],
       "icon": "mylar",
       "tag": "",
       "image": "/assets/uploads/1-1.png",
