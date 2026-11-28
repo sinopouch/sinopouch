@@ -411,6 +411,131 @@
     host.parentNode.appendChild(menu);
   }
 
+  // ---------- 博客：分类映射 / 日期格式 / 列表 / 详情 ----------
+  function catName(cats, slug) {
+    var found = (cats || []).filter(function (c) { return c.slug === slug; })[0];
+    return found ? found.name : (slug || "General");
+  }
+  function fmtDate(d) {
+    if (!d) return "";
+    var p = String(d).split("-");
+    if (p.length === 3) {
+      var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+      var m = months[parseInt(p[1], 10) - 1] || p[1];
+      return m + " " + parseInt(p[2], 10) + ", " + p[0];
+    }
+    return String(d);
+  }
+  function postHref(post) {
+    return 'blog-post.html?s=' + encodeURIComponent(post.slug || "");
+  }
+  function postThumb(post) {
+    if (post.image) {
+      return '<img src="' + esc(imgv(post.image)) + '" alt="' + esc(post.title) + '" loading="lazy">';
+    }
+    // 无封面图时用品牌色 SVG 占位，保证卡片不空
+    return '<svg viewBox="0 0 120 90" xmlns="http://www.w3.org/2000/svg"><rect width="120" height="90" fill="#E9F7F1"/>' +
+      '<path d="M34 20 L86 20 L90 74 Q90 79 85 79 L35 79 Q30 79 30 74 Z" fill="#fff" stroke="#21A179" stroke-width="2"/>' +
+      '<rect x="44" y="36" width="32" height="4" rx="2" fill="#21A179"/>' +
+      '<rect x="42" y="46" width="36" height="3" rx="1.5" fill="#b9d3c7"/>' +
+      '<rect x="46" y="54" width="28" height="3" rx="1.5" fill="#b9d3c7"/>' +
+      '<circle cx="60" cy="66" r="6" fill="#F2A93B"/></svg>';
+  }
+  function renderBlogList(blog) {
+    var grid = document.querySelector("[data-blog-grid]");
+    var filters = document.querySelector("[data-blog-filters]");
+    if (!blog || !blog.posts) return;
+    var cats = blog.categories || [];
+    var qs = new URLSearchParams(location.search);
+    var active = qs.get("cat") || "all";
+
+    if (filters) {
+      var tabs = [{ slug: "all", name: "All Posts" }].concat(cats);
+      filters.innerHTML = tabs.map(function (c) {
+        var href = c.slug === "all" ? "blog.html" : "blog.html?cat=" + encodeURIComponent(c.slug);
+        return '<a href="' + href + '" class="blog-filter' + (active === c.slug ? " is-active" : "") + '">' + esc(c.name) + "</a>";
+      }).join("");
+    }
+    if (!grid) return;
+    var posts = blog.posts.filter(function (p) {
+      return active === "all" || p.category === active;
+    });
+    if (!posts.length) {
+      grid.innerHTML = '<p style="color:var(--muted)">No articles in this category yet.</p>';
+      return;
+    }
+    grid.innerHTML = posts.map(function (p) {
+      return '<a class="blog-card" href="' + postHref(p) + '">' +
+        '<div class="blog-card-media">' + postThumb(p) + "</div>" +
+        '<div class="blog-card-body">' +
+          '<div class="blog-meta"><span class="blog-cat">' + esc(catName(cats, p.category)) + "</span>" +
+          '<span class="blog-date">' + esc(fmtDate(p.date)) + "</span></div>" +
+          "<h3>" + esc(p.title) + "</h3>" +
+          "<p>" + esc(p.excerpt) + "</p>" +
+          '<span class="blog-read">Read More <span aria-hidden="true">→</span></span>' +
+        "</div>" +
+      "</a>";
+    }).join("");
+  }
+  function renderBlogNavDropdown(blog) {
+    var host = document.querySelector("[data-nav-blog]");
+    if (!host || !blog) return;
+    var cats = blog.categories || [];
+    var items = [{ slug: "all", name: "All Posts" }].concat(cats).map(function (c) {
+      var href = c.slug === "all" ? "blog.html" : "blog.html?cat=" + encodeURIComponent(c.slug);
+      return '<li><a href="' + href + '">' + esc(c.name) + "</a></li>";
+    }).join("");
+    var menu = document.createElement("div");
+    menu.className = "nav-dropdown blog-nav-dropdown";
+    menu.innerHTML = '<div class="nav-dropdown-inner" style="--dd-cols:1"><ul>' + items + "</ul></div>";
+    host.parentNode.classList.add("nav-blog-parent");
+    host.parentNode.appendChild(menu);
+  }
+
+  function renderBlogPost(blog) {
+    var host = document.getElementById("blogPostContent");
+    if (!host || !blog || !blog.posts) return;
+    var qs = new URLSearchParams(location.search);
+    var slug = qs.get("s") || "";
+    var post = blog.posts.filter(function (p) { return p.slug === slug; })[0];
+    if (!post) {
+      host.innerHTML = '<div class="detail-box" style="padding:40px"><p>Article not found. <a href="blog.html">Back to blog</a></p></div>';
+      return;
+    }
+    var cats = blog.categories || [];
+    document.title = post.title + " | SinoPouch Blog";
+    var desc = document.querySelector('meta[name="description"]');
+    if (desc && post.excerpt) desc.setAttribute("content", post.excerpt);
+    var shareUrl = encodeURIComponent(location.href.split("#")[0]);
+    var shareText = encodeURIComponent(post.title + " — SinoPouch Blog");
+    var shareHtml =
+      '<div class="sd-share">' +
+        '<a class="sd-share-btn sd-sh-f" href="https://www.facebook.com/sharer/sharer.php?u=' + shareUrl + '" target="_blank" rel="noopener" aria-label="Facebook">f</a>' +
+        '<a class="sd-share-btn sd-sh-x" href="https://twitter.com/intent/tweet?url=' + shareUrl + '&text=' + shareText + '" target="_blank" rel="noopener" aria-label="X">X</a>' +
+        '<a class="sd-share-btn sd-sh-in" href="https://www.linkedin.com/sharing/share-offsite/?url=' + shareUrl + '" target="_blank" rel="noopener" aria-label="LinkedIn">in</a>' +
+        '<a class="sd-share-btn sd-sh-wa" href="https://wa.me/?text=' + shareText + '%20' + shareUrl + '" target="_blank" rel="noopener" aria-label="WhatsApp">W</a>' +
+      "</div>";
+    var cover = post.image
+      ? '<div class="blog-post-cover"><img src="' + esc(imgv(post.image)) + '" alt="' + esc(post.title) + '"></div>'
+      : "";
+    host.innerHTML =
+      '<div class="detail-box blog-post-box">' +
+        '<div class="crumb"><a href="index.html">Home</a> / <a href="blog.html">Blog</a> / ' + esc(catName(cats, post.category)) + "</div>" +
+        '<article class="blog-post-wrap">' +
+          '<div class="blog-post-head">' +
+            '<div class="blog-meta"><span class="blog-cat">' + esc(catName(cats, post.category)) + "</span>" +
+            '<span class="blog-date">' + esc(fmtDate(post.date)) + "</span></div>" +
+            "<h1>" + esc(post.title) + "</h1>" +
+            (post.excerpt ? '<p class="blog-post-lead">' + esc(post.excerpt) + "</p>" : "") +
+          "</div>" +
+          cover +
+          '<div class="blog-post-rich">' + md(post.content) + "</div>" +
+          shareHtml +
+        "</article>" +
+        '<div class="detail-back"><a href="blog.html">← Back to all articles</a></div>' +
+      "</div>";
+  }
+
   Promise.all([load("site"), load("products"), load("content"), load("pages")])
     .then(function (res) {
       cache.site = res[0];
@@ -429,5 +554,17 @@
     })
     .catch(function (e) {
       console.warn("SinoPouch data load skipped:", e.message);
+    });
+
+  // 博客数据独立加载：即使 blog.json 缺失或出错，也不影响主站其它内容
+  load("blog")
+    .then(function (b) {
+      cache.blog = b;
+      renderBlogNavDropdown(cache.blog);
+      renderBlogList(cache.blog);
+      renderBlogPost(cache.blog);
+    })
+    .catch(function (e) {
+      console.warn("SinoPouch blog load skipped:", e.message);
     });
 })();
