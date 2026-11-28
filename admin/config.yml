@@ -209,3 +209,40 @@ collections:
 
           - { label: "行动区标题", name: "cta_title", widget: "string" }
           - { label: "行动区文字", name: "cta_text", widget: "text" }
+
+  # ----------------------------------------------------------
+  # 5. 博客文章（分类 + 文章，前台 blog.html 自动读取）
+  # ----------------------------------------------------------
+  - name: "blog"
+    label: "博客文章"
+    description: "写文章、改分类。改完点右上角 Publish 发布，前台博客页会自动更新。网址标识 slug 用英文小写和连字符，不要改已发布文章的 slug（否则旧链接会失效）。"
+    editor:
+      preview: false
+    files:
+      - name: "posts"
+        label: "博客内容与分类"
+        file: "data/blog.json"
+        fields:
+          - label: "分类列表（导航下拉和筛选按此显示）"
+            name: "categories"
+            widget: "list"
+            summary: "{{fields.name}}"
+            fields:
+              - { label: "分类网址标识", name: "slug", widget: "string", hint: "英文小写连字符，如 packaging-guides" }
+              - { label: "分类名称", name: "name", widget: "string", hint: "如 Packaging Guides" }
+          - label: "文章列表（可增删）"
+            name: "posts"
+            widget: "list"
+            summary: "{{fields.title}}"
+            fields:
+              - { label: "文章标题", name: "title", widget: "string", hint: "建议用客户会搜的关键词，如 Mylar vs Foil Bags" }
+              - { label: "网址标识 slug", name: "slug", widget: "string", hint: "英文小写连字符，如 mylar-vs-foil-bags。已发布后不要改" }
+              - { label: "分类", name: "category", widget: "select", options: ["packaging-guides", "material-comparison", "tips-how-to", "industry-news"], hint: "对应上面分类列表里的网址标识" }
+              - { label: "发布日期", name: "date", widget: "date", hint: "格式 年-月-日，如 2026-11-20" }
+              - { label: "封面图片（可选）", name: "image", widget: "image", required: false, hint: "建议横图 1200×700。留空则显示品牌占位图" }
+              - { label: "列表页摘要", name: "excerpt", widget: "text", hint: "卡片上显示的 1-2 行简介" }
+              - label: "正文（Markdown）"
+                name: "content"
+                widget: "markdown"
+                toolbar_buttons: ["bold", "italic", "heading", "link", "image", "table", "list-ul", "list-ol", "quote", "code"]
+                hint: "用工具栏插入标题、列表、表格、图片。表格前后各空一行。"
