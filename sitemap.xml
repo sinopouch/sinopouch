@@ -12,4 +12,10 @@
   <url><loc>https://sinopouch.com/oem</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://sinopouch.com/certifications</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://sinopouch.com/contact</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://sinopouch.com/blog</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://sinopouch.com/blog-post?s=mylar-vs-foil-vs-poly-bags</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://sinopouch.com/blog-post?s=stand-up-pouch-vs-flat-bottom-bag</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://sinopouch.com/blog-post?s=coffee-bag-valves-explained</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://sinopouch.com/blog-post?s=how-to-choose-food-packaging-material</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://sinopouch.com/blog-post?s=what-is-a-tin-tie-bag</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
 </urlset>

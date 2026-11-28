@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SinoPouch | Product Catalog 2026 — Coffee & Pet Food Packaging</title>
+<meta name="description" content="SinoPouch product catalog: custom coffee bags and pet food pouches — stand-up, flat-bottom, side-gusset, eight-side seal, drip and recyclable mono-material. Made to your design in Shenzhen, China.">
+<style>
+:root{
+  --green:#21A179;--green-deep:#168265;--green-darkest:#0C6148;
+  --amber:#F2A93B;--soft:#EAF6F0;--ink:#12352B;--muted:#5F6B66;--line:#DCE9E2;--paper:#F7FBF9;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,"PingFang SC","Microsoft YaHei",sans-serif;color:var(--ink);background:#fff;line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+a{color:inherit;text-decoration:none}
+
+/* ===== Cover ===== */
+.cover{position:relative;overflow:hidden;background:linear-gradient(135deg,var(--green-darkest) 0%,var(--green-deep) 55%,var(--green) 100%);color:#fff;min-height:560px;display:flex;flex-direction:column;justify-content:center;padding:90px 0 100px}
+.cover::before,.cover::after{content:"";position:absolute;border-radius:50%;border:1px solid rgba(255,255,255,.13)}
+.cover::before{width:520px;height:520px;right:-140px;top:-170px}
+.cover::after{width:360px;height:360px;right:60px;bottom:-210px}
+.cover .wrap{position:relative;z-index:2}
+.cover-logo{width:230px;max-width:70%;margin-bottom:40px;filter:brightness(0) invert(1)}
+.cover-eyebrow{letter-spacing:3px;font-size:.75rem;font-weight:700;color:var(--amber);text-transform:uppercase}
+.cover h1{font-size:clamp(2.4rem,6vw,4.4rem);line-height:1.08;font-weight:800;margin:14px 0 18px;letter-spacing:-1px}
+.cover h1 span{color:var(--amber)}
+.cover .sub{font-size:clamp(1rem,2.2vw,1.3rem);max-width:620px;color:rgba(255,255,255,.9)}
+.cover-meta{display:flex;gap:38px;margin-top:44px;flex-wrap:wrap}
+.cover-meta div{border-left:3px solid var(--amber);padding-left:14px}
+.cover-meta b{display:block;font-size:1.7rem;line-height:1.1}
+.cover-meta small{font-size:.78rem;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.8)}
+.cover-foot{position:absolute;left:0;right:0;bottom:26px;z-index:2}
+.cover-foot .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:.85rem;color:rgba(255,255,255,.85)}
+.cover-foot a{border-bottom:1px solid rgba(255,255,255,.5)}
+
+/* ===== Nav ===== */
+.nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.96);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);box-shadow:0 2px 12px rgba(12,97,72,.05)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;height:62px;gap:20px}
+.nav-brand{font-weight:800;font-size:1.15rem;color:var(--green-darkest);white-space:nowrap}
+.nav-brand span{color:var(--green)}
+.nav-links{display:flex;gap:26px;font-size:.9rem;font-weight:600;color:var(--muted);flex-wrap:wrap}
+.nav-links a:hover{color:var(--green)}
+.nav-quote{background:var(--green);color:#fff!important;padding:9px 18px;border-radius:30px;font-size:.85rem;font-weight:700;white-space:nowrap}
+.nav-quote:hover{background:var(--green-deep)!important;color:#fff!important}
+
+/* ===== Section head ===== */
+.chapter{padding:64px 0 10px}
+.chapter-head{display:flex;align-items:center;gap:18px;margin-bottom:8px}
+.chapter-num{font-size:clamp(2.6rem,6vw,4rem);font-weight:800;color:var(--soft);line-height:1}
+.chapter-head h2{font-size:clamp(1.6rem,3.6vw,2.4rem);color:var(--green-darkest);letter-spacing:-.5px}
+.chapter-head .bar{width:38px;height:4px;background:var(--amber);border-radius:2px}
+.chapter-lead{color:var(--muted);max-width:700px;margin-top:8px}
+.chapter-rule{height:1px;background:var(--line);margin:26px 0 8px}
+
+/* ===== Product card ===== */
+.product{padding:38px 0;border-bottom:1px solid var(--line)}
+.product-grid{display:grid;grid-template-columns:minmax(0,340px) 1fr;gap:34px;align-items:start}
+.pno{display:inline-block;background:var(--green-darkest);color:#fff;font-size:.72rem;font-weight:800;letter-spacing:1.5px;padding:5px 11px;border-radius:20px;margin-bottom:14px}
+.ptitle{font-size:clamp(1.25rem,2.6vw,1.7rem);color:var(--green-darkest);line-height:1.25;letter-spacing:-.3px;margin-bottom:10px}
+.pdesc{color:var(--muted);font-size:.97rem;margin-bottom:18px}
+.plabel{font-size:.7rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--green);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.plabel::after{content:"";flex:1;height:1px;background:var(--line)}
+.pli{list-style:none;display:grid;gap:9px;margin-bottom:22px}
+.pli li{position:relative;padding-left:26px;font-size:.92rem}
+.pli li::before{content:"✓";position:absolute;left:0;top:0;color:var(--green);font-weight:800}
+
+/* image placeholder */
+.photo{position:relative;aspect-ratio:4/3;border:2px dashed #B9D6C8;background:repeating-linear-gradient(45deg,#F2F9F5,#F2F9F5 12px,#EAF5EE 12px,#EAF5EE 24px);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:22px;gap:12px;overflow:hidden}
+.photo .cam{flex:0 0 auto}
+.photo .tag{position:absolute;top:12px;left:12px;background:var(--amber);color:#3a2a00;font-size:.65rem;font-weight:800;letter-spacing:1px;padding:4px 9px;border-radius:14px;text-transform:uppercase}
+.photo .ph-t{font-size:.8rem;font-weight:800;color:var(--green-darkest);letter-spacing:.5px}
+.photo .ph-d{font-size:.74rem;color:var(--muted);line-height:1.5;max-width:250px}
+.photo .ph-hint{position:absolute;bottom:0;left:0;right:0;background:rgba(12,97,72,.9);color:#fff;font-size:.66rem;padding:7px 10px;letter-spacing:.3px}
+
+/* spec table */
+.spec{width:100%;border-collapse:collapse;font-size:.85rem;margin-top:6px}
+.spec tr{border-bottom:1px solid var(--line)}
+.spec tr:last-child{border-bottom:none}
+.spec th,.spec td{padding:9px 10px;text-align:left;vertical-align:top}
+.spec th{width:34%;color:var(--green-darkest);font-weight:700;background:var(--paper)}
+.spec td{color:var(--ink)}
+.spec tr:nth-child(even) td{background:#FCFEFD}
+
+/* note ribbon */
+.note{margin-top:16px;background:var(--soft);border-left:4px solid var(--green);border-radius:0 8px 8px 0;padding:11px 14px;font-size:.85rem;color:var(--green-darkest)}
+
+/* ===== Footer / CTA ===== */
+.cta{background:linear-gradient(135deg,var(--green-darkest),var(--green-deep));color:#fff;padding:64px 0;text-align:center;margin-top:40px}
+.cta h2{font-size:clamp(1.6rem,3.6vw,2.3rem);margin-bottom:12px}
+.cta p{color:rgba(255,255,255,.85);max-width:560px;margin:0 auto 24px}
+.cta .btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn{display:inline-block;padding:12px 26px;border-radius:32px;font-weight:700;font-size:.92rem}
+.btn-a{background:var(--amber);color:#3a2a00}
+.btn-b{background:transparent;border:2px solid rgba(255,255,255,.7);color:#fff}
+.footer{background:#0B3D2E;color:rgba(255,255,255,.8);padding:38px 0;font-size:.85rem}
+.footer .wrap{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.footer b{color:#fff}
+.footer a{border-bottom:1px solid rgba(255,255,255,.4)}
+
+/* ===== Responsive ===== */
+@media(max-width:820px){
+  .product-grid{grid-template-columns:1fr;gap:24px}
+  .photo{aspect-ratio:16/10}
+  .nav-links{gap:14px;font-size:.82rem}
+  .nav-links a:not(.nav-quote){display:none}
+  .cover-meta{gap:24px}
+}
+@media print{
+  .nav,.cta{display:none}
+  .cover{min-height:auto;padding:50px 0;background:var(--green-darkest)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .product{break-inside:avoid;page-break-inside:avoid}
+  .photo,.spec th,.cover,.chapter-num{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  body{font-size:11px}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ COVER ============ -->
+<header class="cover">
+  <div class="wrap">
+    <img class="cover-logo" src="assets/logo.svg" alt="SinoPouch">
+    <div class="cover-eyebrow">Flexible Packaging Solutions · Shenzhen, China</div>
+    <h1>Product <span>Catalog</span> 2026</h1>
+    <p class="sub">Custom printed coffee bags and pet food pouches — built to protect your product, designed to sell it on the shelf.</p>
+    <div class="cover-meta">
+      <div><b>13</b><small>Product Styles</small></div>
+      <div><b>2</b><small>Collections</small></div>
+      <div><b>100%</b><small>Customisable</small></div>
+    </div>
+  </div>
+  <div class="cover-foot">
+    <div class="wrap">
+      <span>www.sinopouch.com</span>
+      <span>sales@sinopouch.com &nbsp;·&nbsp; WhatsApp +86 138 0000 0000</span>
+    </div>
+  </div>
+</header>
+
+<!-- ============ NAV ============ -->
+<nav class="nav">
+  <div class="wrap">
+    <div class="nav-brand">Sino<span>Pouch</span></div>
+    <div class="nav-links">
+      <a href="#coffee">Coffee Bags</a>
+      <a href="#pet">Pet Food Bags</a>
+      <a href="#quote" class="nav-quote">Get a Free Quote</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ============ CHAPTER 1: COFFEE ============ -->
+<section class="chapter" id="coffee">
+  <div class="wrap">
+    <div class="chapter-head">
+      <div class="chapter-num">01</div>
+      <div class="bar"></div>
+      <h2>Coffee Packaging</h2>
+    </div>
+    <p class="chapter-lead">Eight-side seal, side-gusset, flat-bottom, rope-handle and drip formats — with degassing valves, resealable zippers and barrier films that keep freshly roasted coffee at its best.</p>
+    <div class="chapter-rule"></div>
+    <div id="list-coffee"></div>
+  </div>
+</section>
+
+<!-- ============ CHAPTER 2: PET FOOD ============ -->
+<section class="chapter" id="pet">
+  <div class="wrap">
+    <div class="chapter-head">
+      <div class="chapter-num">02</div>
+      <div class="bar"></div>
+      <h2>Pet Food Packaging</h2>
+    </div>
+    <p class="chapter-lead">From 200g treat sachets to 50kg bulk bags — stand-up, flat-bottom, side-gusset and recyclable mono-material structures, printed in digital or gravure to suit your volume.</p>
+    <div class="chapter-rule"></div>
+    <div id="list-pet"></div>
+  </div>
+</section>
+
+<!-- ============ CTA ============ -->
+<section class="cta" id="quote">
+  <div class="wrap">
+    <h2>Let's Build Your Bag</h2>
+    <p>Send us your product, size and logo — we'll come back with a structure, artwork suggestion and a quote within 12 hours. Samples available for quality checks.</p>
+    <div class="btns">
+      <a class="btn btn-a" href="mailto:sales@sinopouch.com">Email Us →</a>
+      <a class="btn btn-b" href="https://wa.me/8613800000000" target="_blank" rel="noopener">Chat on WhatsApp</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+  <div class="wrap">
+    <div><b>SinoPouch Packaging Co., Ltd.</b><br>Flexible packaging solutions · Shenzhen, Guangdong, China</div>
+    <div>Web: <a href="https://sinopouch.com">www.sinopouch.com</a><br>Email: <a href="mailto:sales@sinopouch.com">sales@sinopouch.com</a></div>
+    <div>© 2026 SinoPouch. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+var PRODUCTS = [
+  /* ---------------- COFFEE ---------------- */
+  {
+    cat:"coffee", no:"01",
+    title:"Holographic Eight-Side Seal Coffee Bags with Optional Valve",
+    desc:"Eye-catching holographic and rainbow film coffee bags in an eight-side seal box pouch — thickened, water & moisture resistant, with or without a one-way valve. Custom logo printing and flexible sizes.",
+    photo:"Holographic / rainbow film bag photographed at an angle so the light catches the iridescent finish; include a valve close-up and a few size variants together.",
+    highlights:[
+      "Iridescent holographic & rainbow film — vertical laser, cube laser, cube rainbow and vertical rainbow.",
+      "Rigid eight-side seal box pouch stands tall, with five printable faces.",
+      "Thickened PE / PET film, water and moisture resistant.",
+      "Optional one-way degassing valve releases CO₂ without letting air in.",
+      "Stock sizes from 1/4 lb to 2 lb, plus custom sizes and logo printing."
+    ],
+    specs:[
+      ["Bag Type","Eight-side seal box pouch / stand-up pouch"],
+      ["Material","PE / clear rainbow film; PE/PET holographic laser film"],
+      ["Finish","Vertical laser, cube laser, cube rainbow, vertical rainbow"],
+      ["Sizes","1/4 lb: 9×18+7, 13.5×14.5+8 cm; 1/2 lb: 13×20+7, 15.5×16.5+8 cm; 1 lb: 13.5×26.5+7.5, 19.5×20.5+8 cm; 2 lb: 15×32.5+9.5, 23×24+10 cm"],
+      ["Valve","With or without one-way degassing valve"],
+      ["Printing","Custom logo and artwork printing"],
+      ["Application","Coffee beans, tea, dried food, snacks, gift packs"]
+    ]
+  },
+  {
+    cat:"coffee", no:"02",
+    title:"Aluminium Foil Side-Gusset Coffee Bags with Coloured Valve",
+    desc:"Food-grade aluminium foil side-gusset coffee bags with a coloured one-way degassing valve — 7 colours, 3 sizes, matte PET/PE film, with or without valve. Custom logo printing available.",
+    photo:"Line-up of the 7 colours (silver, kraft, blue, gold, red, black, white) standing side by side; add a macro shot of the coloured valve.",
+    highlights:[
+      "Coloured one-way valve — functional protection plus an instant visual signature.",
+      "Aluminium foil laminate blocks light, oxygen and moisture.",
+      "Side-gusset structure expands into a broad, stable base.",
+      "7 colours × 3 ready sizes (1/2 lb, 1 lb, 2 lb), valve or no valve.",
+      "Custom logo printing, with help finishing the artwork."
+    ],
+    specs:[
+      ["Bag Type","Side-gusset (bellows) stand-up pouch, centre seal"],
+      ["Material","Matte film / PET / PE laminate with aluminium foil; kraft finish available"],
+      ["Colours","Silver, kraft, blue, gold, red, black, white"],
+      ["Sizes","1/2 lb: 9×27+5 cm; 1 lb: 10×34+6 cm; 2 lb: 13.5×41+7 cm"],
+      ["Valve","With or without coloured one-way degassing valve"],
+      ["Printing","Custom logo and artwork printing"],
+      ["Application","Coffee beans, tea, powder, dried food"]
+    ]
+  },
+  {
+    cat:"coffee", no:"03",
+    title:"Two-Tone Eight-Side Seal Coffee Bags with Zipper & Optional Valve",
+    desc:"Colour-blocked eight-side seal coffee bags with a resealable zipper, aluminium foil barrier and optional one-way valve — 6 two-tone colour combos and 3 sizes. Custom printing available.",
+    photo:"Two-tone eight-side seal bag showing the contrasting side panels, zipper top and rigid base; show several of the 6 colour combos together.",
+    highlights:[
+      "Colour-blocked side panels in 6 two-tone combinations — a distinctive shelf look.",
+      "Rigid eight-side seal box pouch with five printable faces.",
+      "Resealable zipper plus optional one-way valve for freshly roasted beans.",
+      "Thick food-grade aluminium foil composite against moisture, light and oxygen.",
+      "Three ready sizes (1/2 lb, 1 lb, 2 lb), with gravure custom printing."
+    ],
+    specs:[
+      ["Bag Type","Eight-side seal box pouch, stand-up with zipper"],
+      ["Material","Food-grade composite with aluminium foil layer"],
+      ["Colour Combos","White+red, white+orange, white+gold, white+blue, black+gold, black+grey"],
+      ["Sizes","1/2 lb: 13×20+7 cm; 1 lb: 13.5×26.5+7.5 cm; 2 lb: 15×32.5+9.5 cm"],
+      ["Closure","Resealable zipper"],
+      ["Valve","With or without one-way degassing valve"],
+      ["Printing","Gravure printing; custom logo and artwork"],
+      ["Application","Coffee beans, tea, powder, dried food, pet food"]
+    ]
+  },
+  {
+    cat:"coffee", no:"04",
+    title:"Eight-Side Seal Coffee Bags with Rope Handle & Optional Valve",
+    desc:"Eight-side seal coffee bags with a sturdy rope handle for easy carrying and hanging display — MOPP/VMPET/PE foil laminate, 13 colours, sizes from 125g to 1kg, with custom finishes.",
+    photo:"Rope-handle bag hanging on a display hook and a carrying shot; add a close-up of the handle attachment and the 13-colour range.",
+    highlights:[
+      "Integrated rope handle — carry it or hang it on display hooks.",
+      "Rigid eight-side seal base with five printable faces.",
+      "MOPP / VMPET / PE metallised foil barrier against moisture, oxygen and light.",
+      "Optional one-way degassing valve; no-valve version available.",
+      "Gravure printing, hot stamping, UV varnish and gloss finishes."
+    ],
+    specs:[
+      ["Bag Type","Eight-side seal box pouch with rope handle"],
+      ["Material","MOPP / VMPET / PE metallised laminate"],
+      ["Handle","Integrated rope handle, carry or hang"],
+      ["Colours","White, black, gold, silver, orange, grey, yellow, green, blue, army green, navy, white cotton paper, yellow kraft"],
+      ["Sizes","125g, 250g, 500g, 1kg; also 14×14+8, 16×16+8, 20×20+8, 13.5×14.5+8, 15.5×16.5+8, 19.5×20.5+8, 23×24+10 cm"],
+      ["Valve","With or without one-way degassing valve"],
+      ["Finishes","Gravure printing, hot stamping, UV varnish, gloss lamination"],
+      ["Application","Coffee beans, tea, dried food, gift packs, retail display"]
+    ]
+  },
+  {
+    cat:"coffee", no:"05",
+    title:"Drip Coffee Bags with Hanging Ears — Foil-Lined Kraft Pouches",
+    desc:"Single-serve drip coffee bags with hanging ears, 10×12.5 cm foil-lined kraft composite, 0.26 mm thick and moisture proof. 15+ colours and finishes including blank kraft, with custom logo printing.",
+    photo:"Drip bag hooked over a cup mid-brew, plus a flat lay of the printed finishes and an unprinted kraft version side by side.",
+    highlights:[
+      "Hanging ears fit most cups — brew anywhere, no equipment needed.",
+      "Food-contact-grade kraft / foil composite, moisture proof, heat sealed.",
+      "Approx. 0.26 mm double layer, 10×12.5 cm, ±0.01 mm tolerance.",
+      "15+ colours and finishes, including unprinted kraft for your own label.",
+      "Custom logo printing, hot stamping, UV varnish and gloss finishes."
+    ],
+    specs:[
+      ["Bag Type","Drip coffee bag with hanging ears, heat sealed"],
+      ["Size","10×12.5 cm"],
+      ["Material","Food-contact-grade kraft / foil composite"],
+      ["Thickness","Approx. 0.26 mm (26-silk) double layer"],
+      ["Colours & Finishes","UV printed or unprinted: white, black, pink, red, kraft, gold, light blue, dark blue, brown, Hermes orange; no-lamination kraft available"],
+      ["Custom Options","Logo printing, hot stamping, UV varnish, gloss finish"],
+      ["Feature","Moisture proof, single serve, no equipment needed"],
+      ["Application","Drip coffee, pour-over, single-serve coffee, tea"]
+    ]
+  },
+  {
+    cat:"coffee", no:"06",
+    title:"Custom Printed Flat-Bottom Kraft Foil Coffee Bags with Zipper & Valve",
+    desc:"Custom printed flat-bottom coffee bags in MOPP/kraft/VMPET/PE with a zipper and one-way valve — white or brown kraft, 6 stock sizes, 0.1/0.12 mm thick. Full-colour gravure printing.",
+    photo:"White kraft and brown kraft flat-bottom bags standing upright; show the zipper top, valve and the five printable faces.",
+    highlights:[
+      "Flat-bottom construction — five printable faces and a stable shelf base.",
+      "MOPP / kraft / VMPET / PE food-grade laminate against moisture, oxygen and light.",
+      "Zipper top plus one-way degassing valve — fresh from roastery to last cup.",
+      "Six stock sizes in square and vertical formats, two thicknesses, custom sizes accepted.",
+      "Gravure printing in white kraft, brown kraft or full-colour custom design."
+    ],
+    specs:[
+      ["Bag Type","Flat-bottom stand-up pouch, zipper top"],
+      ["Material","MOPP / kraft / VMPET / PE; kraft paper and aluminium foil structure"],
+      ["Printing","Gravure printing; custom logo and colours"],
+      ["Colour","White kraft, brown kraft, custom printed design"],
+      ["Sizes","Square: 15.5×16.5+8, 19.5×20.5+8, 23×24+10 cm; Vertical: 13×20+7.5, 13.5×26+7.5, 15×32.5+10 cm; also 20×30, 25×35 cm; custom sizes accepted"],
+      ["Thickness","0.1 mm / 0.12 mm"],
+      ["Closure","Zipper top"],
+      ["Valve","One-way degassing valve"],
+      ["Lead Time","15–25 days new orders; 15–20 days repeat orders"],
+      ["Application","Coffee beans, coffee powder, tea"]
+    ]
+  },
+
+  /* ---------------- PET FOOD ---------------- */
+  {
+    cat:"pet", no:"07",
+    title:"Flat-Bottom Zipper Dog Food Bags — Aluminium Foil, 5–50 kg",
+    desc:"Custom printed flat-bottom dog food bags with a zipper lock and high-barrier PET/AL/NY/LLDPE film — 100–200 microns, sizes for 5kg to 50kg. Built for heavy fill and long-distance shipping.",
+    photo:"Large flat-bottom dog food bag standing at full 50kg size, with a zipper close-up and a 5/10/25/50kg size line-up.",
+    highlights:[
+      "High-barrier PET/AL/NY/LLDPE, 100–200 microns — resists tearing and puncturing.",
+      "Square flat bottom stays stable and stackable even at 50kg.",
+      "Resealable zipper lock — fresh between feeds, no spills.",
+      "Capacities from 5kg to 50kg, custom sizes accepted.",
+      "Gravure printing with your logo and colours, five printable faces."
+    ],
+    specs:[
+      ["Bag Type","Square / flat bottom bag with zipper lock"],
+      ["Material","PET / AL / NY / LLDPE, food grade level 1"],
+      ["Thickness","100–200 microns"],
+      ["Capacity","5kg, 10kg, 15kg, 25kg, 50kg; custom sizes accepted"],
+      ["Example Size","22×45+7 cm"],
+      ["Closure","Zipper top, resealable"],
+      ["Printing","Gravure printing; custom logo and colours"],
+      ["Artwork Format","PDF, CDR, AI, PSD"],
+      ["Feature","Moisture proof, high barrier, stand-up base, tear resistant"],
+      ["Application","Dog food, cat food, kibble, pet treats"]
+    ]
+  },
+  {
+    cat:"pet", no:"08",
+    title:"Digital Printed Dog Treat Bags — Custom Pet Snack Pouches",
+    desc:"Digitally printed dog treat and pet snack bags in MOPP/VMPET/PE — matte finish, 600 dpi CMYK + spot colour, multiple bag formats and capacities from 200g to 10kg. 15-day turnaround.",
+    photo:"Several different treat designs printed digitally side by side; show back-seal, stand-up and flat-bottom formats plus the tear notch and pocket zipper.",
+    highlights:[
+      "Digital printing with no plate costs — change artwork between runs.",
+      "Small batches welcome — test new SKUs, seasonal promos and subscriptions.",
+      "600+ dpi CMYK + spot colour, matte finish, crisp details.",
+      "Back-seal, three-side seal, stand-up and flat-bottom formats, 200g–10kg.",
+      "Tear notch, pocket zipper, round corners, soft touch and valve options."
+    ],
+    specs:[
+      ["Material","MOPP / VMPET / PE, matte finish"],
+      ["Printing","Digital printing, CMYK + spot colour, 600+ dpi"],
+      ["Bag Type","Three-side seal, stand-up pouch, flat-bottom bag, back-seal bag"],
+      ["Capacity","200g, 250g, 500g, 1kg, 2kg, 5kg, 10kg"],
+      ["Size & Colour","Custom"],
+      ["Accessories","Pocket zipper, round corner, laser score, soft touch, one-way valve, tear notch"],
+      ["Lead Time","Within 15 working days"],
+      ["Application","Dog treats, dog food, cat food, pet snacks, teething sticks, bird / hamster / rabbit food"]
+    ]
+  },
+  {
+    cat:"pet", no:"09",
+    title:"Mono-Material Recyclable Pet Food Pouches for Dog Food & Treats",
+    desc:"Recyclable mono-material pet food pouches in BOPE/PE or BOPP/CPP — no foil or mixed plastic layers, with zipper and tear-notch options, and sizes from 250g to 2kg.",
+    photo:"Recyclable pouch with a mono-material / recycling symbol beside it; show zipper, tear notch and round corners, plus a few pet food applications.",
+    highlights:[
+      "Mono PE / mono PP structure — no aluminium foil, no mixed plastic layers.",
+      "Easier to sort and recycle than traditional multi-layer bags.",
+      "Food-grade for dry kibble, freeze-dried treats, training snacks and samples.",
+      "Digital printing for short runs, gravure for volume; Pantone colour matching.",
+      "Four stock sizes from 250g to 2kg, with zipper, tear notch and valve options."
+    ],
+    specs:[
+      ["Material","Mono PE / mono PP: BOPE/PE, BOPE/MDOPE/PE, BOPP/CPP"],
+      ["Recyclability","Single-material structure, no aluminium foil, no mixed plastic layers"],
+      ["Capacity","250g, 500g, 1kg, 2kg"],
+      ["Stock Sizes","160×270+40 mm, 190×260+90 mm, 230×280+100 mm, 250×340+100 mm; custom sizes available"],
+      ["Printing","Digital printing or gravure printing; Pantone colours, OEM private label"],
+      ["Accessories","Zipper, tear notch, round corner, laser score, plane hole, optional one-way valve"],
+      ["Feature","Food-grade, easy to sort and recycle, resealable options"],
+      ["Application","Dog food, dog treats, cat food, bird food, rabbit food"]
+    ]
+  },
+  {
+    cat:"pet", no:"10",
+    title:"Digitally Printed Dry Dog Food Pouches — Custom Barrier, 250g–10kg",
+    desc:"Digitally printed dog food pouches in MOPP/VMPET/PE, 80–180 microns, stand-up or flat-bottom, 250g–10kg — CMYK + white with matte, soft-touch, spot UV and embossed finishes.",
+    photo:"Multiple dog food formulas in different designs (chicken, salmon, puppy, senior); close-up of soft-touch, spot UV or embossed finish.",
+    highlights:[
+      "Digital printing with no plates — run every SKU without separate plates.",
+      "Barrier structure selected by fat content, shelf life and storage conditions.",
+      "80–180 microns, capacities from 250g to 10kg, stand-up or flat-bottom.",
+      "Matte, glossy, soft touch, spot UV, metallic, holographic and embossed finishes.",
+      "Zipper, pocket zipper, tin tie, heat seal and optional degassing valve."
+    ],
+    specs:[
+      ["Material","MOPP / VMPET / PE"],
+      ["Thickness","80–180 microns"],
+      ["Capacity","250g, 500g, 1kg, 2kg, 5kg, 10kg"],
+      ["Bag Type","Stand-up pouch / flat-bottom bag"],
+      ["Printing","Digital printing, CMYK + white"],
+      ["Surface Finish","Matte, glossy, soft touch, spot UV, metallic, holographic, embossed"],
+      ["Closure","Zipper, pocket zipper, press-to-close zipper, tin tie, heat seal"],
+      ["Valve","Optional degassing valve"],
+      ["Barrier","Structure selected by fat content, shelf life and storage conditions"],
+      ["Lead Time","7–15 working days"],
+      ["Application","Dry dog food, puppy food, grain-free / high-protein formulas, pet supplements"]
+    ]
+  },
+  {
+    cat:"pet", no:"11",
+    title:"Large Side-Gusset Cat Food Bags — Custom Size & Barrier",
+    desc:"Custom-size side-gusset cat food bags for 2kg, 5kg and 10kg dry food — larger capacity, wide print panels, high-barrier or recyclable structures, and resealable closure options.",
+    photo:"Large side-gusset cat food bag showing the expanded gusset side and full panel artwork; include a 2/5/10kg line-up and a stacked warehouse shot.",
+    highlights:[
+      "Side gussets add volume, a fuller shelf shape and wider print panels.",
+      "Barrier selected by filling weight, oil content, shelf life and sales channel.",
+      "Film thickness, sealing width, zipper and handle tuned for heavy packs.",
+      "Press-to-close, slider, pocket zipper and hook-and-loop closures.",
+      "Gravure for volume, digital for trials, flexo for selected structures."
+    ],
+    specs:[
+      ["Bag Type","Side-gusset bag (quad-seal option available)"],
+      ["Capacity","2kg, 5kg, 10kg; custom sizes"],
+      ["Structure","Custom width, height, gusset depth and film thickness"],
+      ["Material Options","PET/PE, BOPP/PE, PET/MET PET/PE, PET/AL/PE; recyclable mono PE and PE/EVOH/PE options"],
+      ["Barrier","Selected by filling weight, oil content, shelf life and sales channel"],
+      ["Closure","Press-to-close, slider, pocket zipper, hook-and-loop"],
+      ["Printing","Gravure, digital or flexographic printing"],
+      ["Surface Finish","Matte, gloss, soft touch, spot UV"],
+      ["Application","Dry cat food, kitten food, freeze-dried food, premium kibble, veterinary diets, treats, private label"]
+    ]
+  },
+  {
+    cat:"pet", no:"12",
+    title:"Custom Zipper Pet Food Bags — High-Barrier Dry Food Pouches, 5–20kg",
+    desc:"Custom printed pet food bags for 5kg, 10kg and 20kg dry cat & dog food — upright or flat-bottom with side gussets, four zipper options, BOPE/PE/EVOH barrier and 10-colour gravure printing.",
+    photo:"5/10/20kg pet food bags standing and stacked; show a slider zipper close-up and the cat/dog artwork across several SKUs.",
+    highlights:[
+      "Structured upright or flat-bottom pouches that stand and stack under heavy fill.",
+      "Four zipper options — standard, slider, resealable and pull-tab.",
+      "BOPE/PE/EVOH high-barrier structure matched to oil content and shelf life.",
+      "Up to 10-colour gravure printing — sharp artwork, barcodes and QR codes.",
+      "Full customisation of size, gusset, finish and handle, 15–25 day production."
+    ],
+    specs:[
+      ["Bag Type","Structured upright pouch with side gussets; flat-bottom option"],
+      ["Capacity","5kg, 10kg, 20kg reference formats; custom sizes accepted"],
+      ["Material","BOPE / PE / EVOH high-barrier option; structure selected by oil content, shelf life and market"],
+      ["Closure","New zipper, slider zipper, resealable zipper, pull-tab zipper"],
+      ["Printing","High-speed gravure printing, up to 10 colours"],
+      ["Custom Options","Size, gusset, bottom, finish, tear notch, handle, barcode, QR code, feeding chart, language"],
+      ["Lead Time","15–25 days"],
+      ["Application","Dry cat food, dry dog food, complete food, private label"]
+    ]
+  },
+  {
+    cat:"pet", no:"13",
+    title:"Food-Grade Aluminium Zip-Top Pet Food Bags with Hang Hole & Gusseted Base",
+    desc:"Food-grade aluminium/Mylar stand-up pet food bags with a zipper top, hang hole and gusseted base — 60–180 microns, 6 colours and custom printing, for cat food, dog food, cakes and dry goods.",
+    photo:"Stand-up bag hanging on a hook to show the hang hole, plus a standing shot showing the gusseted base, zip top and the 6-colour range.",
+    highlights:[
+      "Gusseted bottom stands upright and will not collapse, stacks neatly.",
+      "Built-in hang hole for eye-level hook display.",
+      "Zipper top opens easily and reseals to keep contents fresh.",
+      "Aluminium / Mylar / plastic food-grade laminate, 60–180 microns.",
+      "Six colours or custom colour, gravure or silk-screen printed logo."
+    ],
+    specs:[
+      ["Bag Type","Stand-up pouch with gusseted bottom"],
+      ["Closure","Zipper top (zip cut)"],
+      ["Display","Hang hole for hook display"],
+      ["Material Structure","Aluminium / Mylar / plastic laminate, food grade"],
+      ["Thickness","60–180 microns"],
+      ["Stock Sizes","10×15, 12×16, 15×25, 20×30, 25×35 cm; also 7×7+2×2 and 48×48+6×2 cm"],
+      ["Colours","Blue, pink, black, red, white, yellow; custom colours accepted"],
+      ["Printing","Gravure printing or silk-screen printing; custom logo and design"],
+      ["Quality","Food grade level"],
+      ["Service","OEM / ODM customised"],
+      ["Application","Cat food, dog food, dry food, cakes, baked goods, snacks, dry goods"]
+    ]
+  }
+];
+
+function productCard(p){
+  var rows = p.specs.map(function(s){return "<tr><th>"+s[0]+"</th><td>"+s[1]+"</td></tr>";}).join("");
+  var lis = p.highlights.map(function(h){return "<li>"+h+"</li>";}).join("");
+  return '<article class="product">'
+    + '<div class="product-grid">'
+      + '<div class="photo">'
+        + '<span class="tag">Photo Placeholder</span>'
+        + '<svg class="cam" width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="#21A179" stroke-width="1.4"><rect x="2" y="6" width="20" height="14" rx="2"/><path d="M8 6l1.5-2h5L16 6"/><circle cx="12" cy="13" r="3.5"/></svg>'
+        + '<div class="ph-t">PRODUCT PHOTO #'+p.no+'</div>'
+        + '<div class="ph-d">'+p.photo+'</div>'
+        + '<div class="ph-hint">Replace this box with a real product photo</div>'
+      + '</div>'
+      + '<div class="info">'
+        + '<span class="pno">STYLE '+p.no+'</span>'
+        + '<h3 class="ptitle">'+p.title+'</h3>'
+        + '<p class="pdesc">'+p.desc+'</p>'
+        + '<div class="plabel">Key Selling Points</div>'
+        + '<ul class="pli">'+lis+'</ul>'
+        + '<div class="plabel">Specifications</div>'
+        + '<table class="spec">'+rows+'</table>'
+      + '</div>'
+    + '</div>'
+  + '</article>';
+}
+
+function render(){
+  var coffee = PRODUCTS.filter(function(p){return p.cat==="coffee";}).map(productCard).join("");
+  var pet = PRODUCTS.filter(function(p){return p.cat==="pet";}).map(productCard).join("");
+  document.getElementById("list-coffee").innerHTML = coffee;
+  document.getElementById("list-pet").innerHTML = pet;
+}
+render();
+</script>
+</body>
+</html>
